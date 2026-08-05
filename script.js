@@ -39,7 +39,7 @@ const translations = {
     letterFireworkBtn: "Go to the Firework Lab 🎆",
     fwTitle: "Firework Lab",
     fwSub: "Pick your favorite symbols, add a message, and light up the sky",
-    fwLaunch: "Launch 🚀",
+    fwLaunch: "Launch",
     fwClear: "Clear",
     fwMessagePlaceholder: "Type a message (optional)...",
     footerText: "Made with ❤️ by Noa for Angelina · Since 20.12.2025",
@@ -79,7 +79,7 @@ const translations = {
     letterFireworkBtn: "Zum Feuerwerk-Labor 🎆",
     fwTitle: "Feuerwerk-Labor",
     fwSub: "Wähl deine Lieblingssymbole, schreib eine Nachricht und erleuchte den Himmel",
-    fwLaunch: "Zünden 🚀",
+    fwLaunch: "Zünden",
     fwClear: "Löschen",
     fwMessagePlaceholder: "Schreib eine Nachricht (optional)...",
     footerText: "Gemacht mit ❤️ von Noa für Angelina · Seit dem 20.12.2025",
@@ -355,6 +355,8 @@ function updateTimeCounter() {
   document.getElementById("secondsCount").textContent = seconds;
 }
 
+/* -------- HERO CTA SPECIAL: kleines Monster laeuft langsam rein und braucht
+   mehrere muehsame Versuche, bis es das Herz endlich schafft zu druecken -------- */
 function initHeroCta() {
   const heartBtn = document.getElementById("heartBtn");
   const heartIcon = heartBtn.querySelector(".heart-btn-icon");
@@ -366,31 +368,68 @@ function initHeroCta() {
     isAnimating = true;
 
     runner.style.opacity = "1";
-    runner.style.transform = "translateY(-50%) translateX(0) scaleX(1)";
+    runner.style.transform = "translateY(-50%) translateX(0) scale(1)";
 
     const heartRect = heartBtn.getBoundingClientRect();
     const runnerRect = runner.getBoundingClientRect();
-    const distance = (heartRect.left + heartRect.width / 2) - (runnerRect.left + runnerRect.width / 2) - 6;
+    const arriveOffset = 26;
+    const distance = (heartRect.left + heartRect.width / 2) - (runnerRect.left + runnerRect.width / 2) - arriveOffset;
 
-    anime({
-      targets: runner,
-      translateX: distance,
-      duration: 650,
-      easing: "easeInOutQuad",
+    const tl = anime.timeline({
+      easing: "easeInOutSine",
       complete: () => {
-        anime({ targets: runner, scale: [1, 0.8, 1], duration: 250, easing: "easeOutQuad" });
-        heartIcon.classList.add("filling");
-        anime({ targets: heartIcon, scale: [1, 1.35, 1], duration: 500, easing: "easeOutElastic(1, .6)" });
-
-        setTimeout(() => {
-          heartIcon.classList.remove("filling");
-          heartIcon.classList.add("filled");
-          runner.style.opacity = "0";
-          document.getElementById("story").scrollIntoView({ behavior: "smooth" });
-          setTimeout(() => { isAnimating = false; }, 800);
-        }, 700);
+        runner.style.opacity = "0";
+        document.getElementById("story").scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => { isAnimating = false; }, 800);
       }
     });
+
+    // 1) Langsamer, leicht wackliger Anlauf
+    tl.add({
+      targets: runner,
+      translateX: distance * 0.6,
+      translateY: ["-50%", "-56%", "-50%", "-56%", "-50%"],
+      duration: 1600,
+      easing: "easeInOutSine"
+    })
+      .add({
+        targets: runner,
+        translateX: distance,
+        translateY: ["-50%", "-56%", "-50%"],
+        duration: 900,
+        easing: "easeOutSine"
+      })
+      // 2) Erster muehsamer Versuch - scheitert
+      .add({ targets: runner, rotate: [0, -8], duration: 200, easing: "easeOutQuad" })
+      .add({ targets: runner, translateX: `+=14`, duration: 220, easing: "easeOutQuad" }, "-=0")
+      .add({ targets: heartIcon, scale: [1, 1.05, 1], duration: 300, easing: "easeOutQuad" }, "-=220")
+      .add({ targets: runner, translateX: `-=14`, rotate: 0, duration: 260, easing: "easeInQuad" })
+      // 3) Zweiter muehsamer Versuch - scheitert wieder
+      .add({ targets: runner, rotate: [0, -10], duration: 200, easing: "easeOutQuad" })
+      .add({ targets: runner, translateX: `+=16`, duration: 240, easing: "easeOutQuad" }, "-=0")
+      .add({ targets: heartIcon, scale: [1, 1.08, 1], duration: 320, easing: "easeOutQuad" }, "-=240")
+      .add({ targets: runner, translateX: `-=16`, rotate: 0, duration: 280, easing: "easeInQuad" })
+      // kurze Verschnaufpause
+      .add({ targets: runner, translateY: ["-50%", "-46%", "-50%"], duration: 400, easing: "easeInOutSine" })
+      // 4) Dritter Versuch - endlich Erfolg!
+      .add({ targets: runner, rotate: [0, -12], duration: 220, easing: "easeOutQuad" })
+      .add({ targets: runner, translateX: `+=20`, scale: 1.1, duration: 300, easing: "easeOutQuad" }, "-=0")
+      .add({
+        targets: heartIcon,
+        scale: [1, 1.4, 1],
+        duration: 550,
+        easing: "easeOutElastic(1, .6)",
+        begin: () => { heartIcon.classList.add("filling"); }
+      }, "-=100")
+      .add({
+        targets: runner,
+        translateY: ["-50%", "-75%", "-50%"],
+        rotate: [0, 15, -15, 0],
+        duration: 600,
+        easing: "easeOutQuad",
+        begin: () => { heartIcon.classList.remove("filling"); heartIcon.classList.add("filled"); }
+      })
+      .add({ targets: runner, opacity: 0, duration: 300, easing: "easeInQuad" });
   });
 }
 
