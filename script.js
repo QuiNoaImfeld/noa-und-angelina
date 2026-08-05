@@ -195,6 +195,18 @@ let carouselIndex = 0;
 function t(key) { return translations[currentLang][key]; }
 function getLocalized(obj) { return obj[currentLang] || obj.en; }
 
+/* WICHTIG: anime.js v3 gibt KEIN Promise/.finished zurueck - dieser Wrapper
+   macht animate()-Aufrufe "awaitable", damit Sequenzen wirklich Schritt fuer
+   Schritt (statt alle sofort) ablaufen. */
+function animatePromise(params) {
+  return new Promise((resolve) => {
+    anime(Object.assign({}, params, { complete: resolve }));
+  });
+}
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -355,7 +367,7 @@ function updateTimeCounter() {
   document.getElementById("secondsCount").textContent = seconds;
 }
 
-/* -------- HERO CTA SPECIAL: kleines selbstgebautes Monster mit Augen, Armen und Beinen -------- */
+/* -------- HERO CTA SPECIAL: weisses haariges Monster mit Augen, Armen und Beinen -------- */
 function initHeroCta() {
   const heartBtn = document.getElementById("heartBtn");
   const heartIcon = heartBtn.querySelector(".heart-btn-icon");
@@ -372,98 +384,99 @@ function initHeroCta() {
     pupilRight.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  function attemptPush(force) {
-    return new Promise((resolve) => {
-      const tl = anime.timeline({ complete: resolve });
-      tl.add({ targets: monster, translateY: ["-50%", "-52%", "-50%"], duration: 150, easing: "easeOutQuad" })
-        .add({ targets: arm, rotate: [0, -force], duration: 220, easing: "easeOutQuad" }, "-=100")
-        .add({ targets: heartIcon, scale: [1, 1 + force / 400, 1], duration: 260, easing: "easeOutQuad" }, "-=180")
-        .add({ targets: arm, rotate: 0, duration: 260, easing: "easeInQuad" })
-        .add({ targets: monster, translateX: "-=3", duration: 120, easing: "easeOutQuad" })
-        .add({ targets: monster, translateX: "+=3", duration: 180, easing: "easeOutQuad" });
-    });
+  async function attemptPush(force) {
+    await animatePromise({ targets: monster, translateY: [0, -3, 0], duration: 160, easing: "easeOutQuad" });
+    await animatePromise({ targets: arm, rotate: [0, -force], duration: 240, easing: "easeOutQuad" });
+    animatePromise({ targets: heartIcon, scale: [1, 1 + force / 350, 1], duration: 280, easing: "easeOutQuad" });
+    await wait(120);
+    await animatePromise({ targets: arm, rotate: 0, duration: 260, easing: "easeInQuad" });
+    await animatePromise({ targets: monster, translateX: "-=4", duration: 130, easing: "easeOutQuad" });
+    await animatePromise({ targets: monster, translateX: "+=4", duration: 180, easing: "easeOutQuad" });
   }
 
   heartBtn.addEventListener("click", async () => {
     if (isAnimating) return;
     isAnimating = true;
 
+    // Ausgangszustand zuruecksetzen
+    monster.style.opacity = "0";
+    monster.style.transform = "translateX(0) translateY(0)";
+    lookAt(0, 0);
+
     const heartRect = heartBtn.getBoundingClientRect();
     const monsterRect = monster.getBoundingClientRect();
-    const arriveOffset = 30;
+    const arriveOffset = 34;
     const fullDistance = (heartRect.left + heartRect.width / 2) - (monsterRect.left + monsterRect.width / 2) - arriveOffset;
 
-    // 1) Kurz reinschauen (peeken) von der Seite
+    // 1) Kurz von der Seite reinschauen (peeken)
     monster.style.opacity = "1";
-    await anime({ targets: monster, translateX: ["-260px", "-230px"], duration: 500, easing: "easeOutQuad" }).finished;
+    await animatePromise({ targets: monster, translateX: [0, 26], duration: 550, easing: "easeOutQuad" });
 
     // 2) Herz anschauen
-    lookAt(2, 0);
-    await new Promise((r) => setTimeout(r, 400));
+    lookAt(2, 0.5);
+    await wait(450);
 
     // 3) Zurueck zum Betrachter schauen
-    lookAt(-1, 1);
-    await new Promise((r) => setTimeout(r, 450));
-
-    // 4) Reinspringen
+    lookAt(-1.5, -1);
+    await wait(500);
     lookAt(0, 0);
-    await anime({
-      targets: monster,
-      translateX: fullDistance * 0.35,
-      translateY: ["-50%", "-68%", "-50%"],
-      scale: [0.9, 1.05, 1],
-      duration: 550,
-      easing: "easeOutQuad"
-    }).finished;
 
-    // 5) Mit sichtbaren Beinen zum Herz laufen (mehrere Schritte)
-    const steps = 3;
-    const remaining = fullDistance - fullDistance * 0.35;
+    // 4) Reinspringen (kompletter Hopser ins Bild)
+    await animatePromise({
+      targets: monster,
+      translateX: fullDistance * 0.32,
+      translateY: [0, -22, 0],
+      scale: [0.85, 1.08, 1],
+      duration: 600,
+      easing: "easeOutQuad"
+    });
+
+    // 5) Mit sichtbar schwingenden Beinen zum Herz laufen
+    const steps = 4;
+    const startX = fullDistance * 0.32;
+    const remaining = fullDistance - startX;
     for (let i = 0; i < steps; i++) {
-      const stepTarget = fullDistance * 0.35 + (remaining * (i + 1)) / steps;
-      await anime({
-        targets: legLeft,
-        rotate: i % 2 === 0 ? -26 : 14,
-        duration: 220,
-        easing: "easeInOutSine"
-      }).finished;
-      anime({ targets: legRight, rotate: i % 2 === 0 ? 14 : -26, duration: 220, easing: "easeInOutSine" });
-      await anime({
+      const stepTarget = startX + (remaining * (i + 1)) / steps;
+      const swingA = i % 2 === 0 ? -28 : 16;
+      const swingB = i % 2 === 0 ? 16 : -28;
+      animatePromise({ targets: legLeft, rotate: swingA, duration: 260, easing: "easeInOutSine" });
+      animatePromise({ targets: legRight, rotate: swingB, duration: 260, easing: "easeInOutSine" });
+      await animatePromise({
         targets: monster,
         translateX: stepTarget,
-        translateY: ["-50%", "-54%", "-50%"],
-        duration: 260,
+        translateY: [0, -8, 0],
+        duration: 300,
         easing: "easeInOutSine"
-      }).finished;
+      });
     }
-    anime({ targets: [legLeft, legRight], rotate: 0, duration: 200, easing: "easeOutQuad" });
+    await animatePromise({ targets: [legLeft, legRight], rotate: 0, duration: 220, easing: "easeOutQuad" });
 
     // 6) Zwei muehsame Fehlversuche
-    await new Promise((r) => setTimeout(r, 150));
-    await attemptPush(35);
-    await new Promise((r) => setTimeout(r, 250));
-    await attemptPush(45);
-    await new Promise((r) => setTimeout(r, 300));
+    await wait(150);
+    await attemptPush(30);
+    await wait(280);
+    await attemptPush(42);
+    await wait(320);
 
     // 7) Dritter Versuch - endlich Erfolg!
-    await anime({ targets: arm, rotate: [0, -70], duration: 260, easing: "easeOutQuad" }).finished;
+    await animatePromise({ targets: monster, translateY: [0, -4, 0], duration: 150, easing: "easeOutQuad" });
+    await animatePromise({ targets: arm, rotate: [0, -75], duration: 280, easing: "easeOutQuad" });
     heartIcon.classList.add("filling");
-    await anime({ targets: heartIcon, scale: [1, 1.4, 1], duration: 550, easing: "easeOutElastic(1, .6)" }).finished;
+    await animatePromise({ targets: heartIcon, scale: [1, 1.4, 1], duration: 550, easing: "easeOutElastic(1, .6)" });
     heartIcon.classList.remove("filling");
     heartIcon.classList.add("filled");
 
     // 8) Freudentanz
-    await anime({
+    await animatePromise({
       targets: monster,
-      translateY: ["-50%", "-78%", "-50%", "-70%", "-50%"],
+      translateY: [0, -26, 0, -18, 0],
       rotate: [0, -10, 10, 0],
-      duration: 700,
+      duration: 750,
       easing: "easeOutQuad"
-    }).finished;
-    anime({ targets: [legLeft, legRight], rotate: 0, duration: 200 });
-    anime({ targets: arm, rotate: 0, duration: 200 });
+    });
+    animatePromise({ targets: [legLeft, legRight, arm], rotate: 0, duration: 200 });
 
-    await anime({ targets: monster, opacity: 0, duration: 350, easing: "easeInQuad" }).finished;
+    await animatePromise({ targets: monster, opacity: 0, duration: 350, easing: "easeInQuad" });
 
     document.getElementById("story").scrollIntoView({ behavior: "smooth" });
     setTimeout(() => { isAnimating = false; }, 800);
