@@ -73,6 +73,8 @@ const translations = {
   }
 };
 
+/* WICHTIG: Reihenfolge = Anzeige-Reihenfolge im Quiz. Bewusst 4 verschiedene Fragen:
+   0 = Karte, 1 = Kosename (Text), 2 = Erstes Date (Multiple Choice), 3 = Datum (Text) */
 const quizQuestions = [
   {
     type: "map",
@@ -187,30 +189,12 @@ function getLocalized(obj) {
 function switchLanguage(lang) {
   currentLang = lang;
   applyTranslations();
-  document.querySelectorAll(".quiz-question p").forEach((p, i) => {
-    p.textContent = `${i + 1}. ${getLocalized(quizQuestions[i].question)}`;
-  });
-  document.querySelectorAll(".quiz-map-hint").forEach((el) => (el.textContent = t("quizMapHint")));
-  document.querySelectorAll(".quiz-text-input").forEach((el) => (el.placeholder = t("quizAnswerPlaceholder")));
-  renderQuizOptionsText();
+  renderQuiz();
   if (!document.getElementById("mainContent").classList.contains("hidden")) {
     renderTimeline();
     renderGallery();
     renderCV();
   }
-}
-
-function renderQuizOptionsText() {
-  document.querySelectorAll(".quiz-question").forEach((wrap, i) => {
-    const q = quizQuestions[i];
-    if (q.type === "single") {
-      const labels = wrap.querySelectorAll(".quiz-options label");
-      labels.forEach((label, j) => {
-        const textNode = Array.from(label.childNodes).find((n) => n.nodeType === 3);
-        if (textNode) textNode.textContent = getLocalized(q.options)[j];
-      });
-    }
-  });
 }
 
 function createFloatingHearts(containerId) {
@@ -245,6 +229,7 @@ function haversineDistanceKm(lat1, lng1, lat2, lng2) {
 function renderQuiz() {
   const container = document.getElementById("quizContainer");
   container.innerHTML = "";
+
   quizQuestions.forEach((q, i) => {
     const wrap = document.createElement("div");
     wrap.className = "quiz-question";
@@ -261,6 +246,7 @@ function renderQuiz() {
         input.type = "radio";
         input.name = `q${i}`;
         input.value = j;
+        if (userAnswers[i] === j) input.checked = true;
         input.addEventListener("change", () => (userAnswers[i] = j));
         label.appendChild(input);
         label.appendChild(document.createTextNode(opt));
@@ -272,6 +258,7 @@ function renderQuiz() {
       input.type = "text";
       input.className = "quiz-text-input";
       input.placeholder = t("quizAnswerPlaceholder");
+      input.value = userAnswers[i] || "";
       input.addEventListener("input", (e) => (userAnswers[i] = e.target.value));
       wrap.appendChild(input);
     } else if (q.type === "map") {
@@ -295,11 +282,12 @@ function renderQuiz() {
         attribution: '&copy; OpenStreetMap'
       }).addTo(map);
 
+      /* Herz IST der Pin - kein separates Nadel-Symbol mehr, Spitze des Herzens = Ort */
       const heartIcon = L.divIcon({
-        html: '<div class="heart-pin">📍💗</div>',
+        html: '<div class="heart-pin">💗</div>',
         className: "",
-        iconSize: [30, 30],
-        iconAnchor: [15, 30]
+        iconSize: [32, 32],
+        iconAnchor: [16, 30]
       });
 
       let marker = null;
@@ -308,6 +296,10 @@ function renderQuiz() {
         marker = L.marker(e.latlng, { icon: heartIcon }).addTo(map);
         userAnswers[i] = { lat: e.latlng.lat, lng: e.latlng.lng };
       });
+
+      if (userAnswers[i] && userAnswers[i].lat) {
+        marker = L.marker([userAnswers[i].lat, userAnswers[i].lng], { icon: heartIcon }).addTo(map);
+      }
 
       mapInstances[i] = map;
     }
