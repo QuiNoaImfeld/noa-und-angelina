@@ -8,9 +8,9 @@ let currentLang = "en";
 
 const translations = {
   en: {
-    gateTitle: "💌 Hey Angi, before you can go any further...",
-    gateSub: "Answer all questions correctly to unlock our story.",
-    gateButton: "Unlock 🔓",
+    gateTitle: "Before you go any further",
+    gateSub: "Answer these to unlock our story.",
+    gateButton: "Unlock",
     heroKicker: "For you, my heart",
     dayLabel: "days",
     hourLabel: "hours",
@@ -42,14 +42,14 @@ const translations = {
     fwClear: "Clear",
     fwMessagePlaceholder: "Type a message (optional)...",
     footerText: "Made with ❤️ by Noa for Angelina · Since 20.12.2025",
-    quizError: "Not quite right... try again! 💭",
-    quizMapHint: "Tip: Zoom with the scroll wheel, then click the place to drop the heart pin.",
+    quizError: "Not quite right, try again.",
+    quizMapHint: "Zoom with the scroll wheel, then click the place to drop the pin.",
     quizAnswerPlaceholder: "Your answer..."
   },
   de: {
-    gateTitle: "💌 Hey Angi, bevor du weiter darfst...",
-    gateSub: "Beantworte alle Fragen richtig, um unsere Geschichte zu öffnen.",
-    gateButton: "Aufschliessen 🔓",
+    gateTitle: "Bevor du weiter darfst",
+    gateSub: "Beantworte diese Fragen, um unsere Geschichte zu öffnen.",
+    gateButton: "Aufschliessen",
     heroKicker: "Für dich, mein Herz",
     dayLabel: "Tage",
     hourLabel: "Stunden",
@@ -81,8 +81,8 @@ const translations = {
     fwClear: "Löschen",
     fwMessagePlaceholder: "Schreib eine Nachricht (optional)...",
     footerText: "Gemacht mit ❤️ von Noa für Angelina · Seit dem 20.12.2025",
-    quizError: "Nicht ganz richtig... versuch es nochmal! 💭",
-    quizMapHint: "Tipp: Zoom mit dem Mausrad, dann auf den Ort klicken, um den Herz-Pin zu setzen.",
+    quizError: "Nicht ganz richtig, versuch es nochmal.",
+    quizMapHint: "Zoom mit dem Mausrad, dann auf den Ort klicken, um den Pin zu setzen.",
     quizAnswerPlaceholder: "Deine Antwort..."
   }
 };
@@ -90,7 +90,7 @@ const translations = {
 const quizQuestions = [
   {
     type: "map",
-    question: { en: "Where did we officially become a couple? Drop a heart pin on the map 💗", de: "An welchem Ort sind wir zusammengekommen? Setz einen Herz-Pin auf die Karte 💗" },
+    question: { en: "Where did we officially become a couple?", de: "An welchem Ort sind wir zusammengekommen?" },
     lat: 47.42018000286268,
     lng: 9.270979952465375,
     startZoom: 12,
@@ -171,8 +171,8 @@ const cvExperience = {
   ]
 };
 const cvSkills = {
-  en: ["Best fucking partners, period 😤❤️", "Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
-  de: ["Die besten verdammten Partner, Punkt 😤❤️", "Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
+  en: ["Best fucking partners 😤❤️", "Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
+  de: ["Die besten verdammten Partner 😤❤️", "Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
 };
 const cvAchievements = {
   en: ["Met each other's parents", "Completely conquered each other's hearts", "Made each other the happiest people alive", "Made the best decision of our lives (choosing each other)"],
@@ -250,7 +250,7 @@ function renderQuiz() {
     const wrap = document.createElement("div");
     wrap.className = "quiz-question";
     const p = document.createElement("p");
-    p.textContent = `${i + 1}. ${getLocalized(q.question)}`;
+    p.textContent = getLocalized(q.question);
     wrap.appendChild(p);
 
     if (q.type === "single") {
@@ -333,7 +333,6 @@ function checkQuiz() {
   if (allCorrect) {
     document.getElementById("gate").classList.add("hidden");
     document.getElementById("mainContent").classList.remove("hidden");
-    document.getElementById("scrollScrubber").classList.remove("hidden");
     initMainContent();
   } else {
     errorEl.textContent = t("quizError");
@@ -350,44 +349,6 @@ function updateTimeCounter() {
   document.getElementById("daysCount").textContent = days;
   document.getElementById("hoursCount").textContent = hours;
   document.getElementById("minutesCount").textContent = minutes;
-}
-
-function initScrollScrubber() {
-  const ticksWrap = document.getElementById("scrubberTicks");
-  ticksWrap.innerHTML = "";
-
-  const tickCount = 40;
-  for (let i = 0; i < tickCount; i++) {
-    const tick = document.createElement("div");
-    tick.className = "scrubber-tick";
-    ticksWrap.appendChild(tick);
-  }
-
-  const fillLayer = document.createElement("div");
-  fillLayer.className = "scrubber-fill";
-  for (let i = 0; i < tickCount; i++) {
-    const tick = document.createElement("div");
-    tick.className = "scrubber-tick";
-    fillLayer.appendChild(tick);
-  }
-  ticksWrap.appendChild(fillLayer);
-
-  const playhead = document.createElement("div");
-  playhead.className = "scrubber-playhead";
-  ticksWrap.appendChild(playhead);
-
-  function updateScrubber() {
-    const doc = document.documentElement;
-    const scrollTop = window.scrollY || doc.scrollTop;
-    const maxScroll = doc.scrollHeight - window.innerHeight;
-    const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
-    fillLayer.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
-    playhead.style.left = pct + "%";
-  }
-
-  window.addEventListener("scroll", updateScrubber, { passive: true });
-  window.addEventListener("resize", updateScrubber);
-  updateScrubber();
 }
 
 function renderTimeline() {
@@ -621,7 +582,6 @@ function initMainContent() {
   renderTimeline();
   renderGallery();
   renderCV();
-  initScrollScrubber();
   anime({ targets: ".hero-content", opacity: [0, 1], translateY: [30, 0], duration: 1000, easing: "easeOutExpo" });
 }
 
