@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -42,14 +42,28 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-kicker" data-i18n="heroKicker">For you, my heart</p>
-      <h1 class="hero-title">NOA <span class="amp">×</span> ANGELINA</h1>
+      <h1 class="hero-title">
+        <span class="name-line">NOA</span>
+        <span class="hero-heart-divider">❤</span>
+        <span class="name-line">ANGELINA</span>
+      </h1>
       <div class="hero-timer">
         <div class="hero-timer-unit"><span id="daysCount">0</span><small data-i18n="dayLabel">days</small></div>
         <div class="hero-timer-unit"><span id="hoursCount">0</span><small data-i18n="hourLabel">hours</small></div>
         <div class="hero-timer-unit"><span id="minutesCount">0</span><small data-i18n="minuteLabel">minutes</small></div>
+        <div class="hero-timer-unit"><span id="secondsCount">0</span><small data-i18n="secondLabel">seconds</small></div>
       </div>
       <p class="hero-sub" data-i18n="heroSubPrefix">together, and counting 💕</p>
-      <a href="#story" class="scroll-down" data-i18n="heroScroll">↓ Our story ↓</a>
+
+      <div class="hero-cta" id="heroCta">
+        <div class="runner" id="runner">🏃</div>
+        <button class="heart-btn" id="heartBtn" aria-label="Continue">
+          <svg class="heart-btn-icon" viewBox="0 0 32 29" width="42" height="38">
+            <path d="M16 27.5 C16 27.5 2 18.5 2 9.8 C2 4.9 6 1.5 10.2 1.5 C13 1.5 15.2 3 16 5.2 C16.8 3 19 1.5 21.8 1.5 C26 1.5 30 4.9 30 9.8 C30 18.5 16 27.5 16 27.5 Z" />
+          </svg>
+        </button>
+        <p class="hero-cta-label" data-i18n="heroScroll">Press the heart to continue</p>
+      </div>
     </div>
   </section>
 
@@ -159,6 +173,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-<script src="script.js?v=9"></script>
+<script src="script.js?v=10"></script>
 </body>
 </html>
