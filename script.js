@@ -2,7 +2,7 @@
    ALLES WAS DU ANPASSEN MUSST STEHT HIER OBEN.
    ========================================================================== */
 
-const relationshipStartDate = new Date("2025-12-20");
+const relationshipStartDate = new Date("2025-12-20T21:00:00");
 
 let currentLang = "en";
 
@@ -12,18 +12,23 @@ const translations = {
     gateSub: "Answer all questions correctly to unlock our story.",
     gateButton: "Unlock 🔓",
     heroKicker: "For you, my heart",
-    heroSubPrefix: "We've been together for",
-    heroSubSuffix: "days",
+    dayLabel: "days",
+    hourLabel: "hours",
+    minuteLabel: "minutes",
+    heroSubPrefix: "together, and counting 💕",
     heroScroll: "↓ Our story ↓",
     storyTitle: "Our journey together",
     storySub: "Scroll down to relive every milestone",
     timelineScrollHint: "scroll ↓",
     galleryTitle: "Our favorite moments",
-    gallerySub: "A picture says more than a thousand words",
+    gallerySub: "Swipe to see more",
+    ourSongTitle: "Our Song",
+    ourSongSub: "The soundtrack of us",
     cvTitle: "Our Relationship CV",
-    cvSub: "Application for the position: Best Girlfriend for Life ❤️",
+    cvSub: "Joint application for the position: Best Couple Ever ❤️",
     cvRolePrefix: "Officially a team since the day we knew",
     cvEducation: "🎓 Education",
+    cvFriendsYears: "Years of being just friends first",
     cvMeeting: "Meeting each other",
     cvFirstDate: "First date",
     cvExperienceTitle: "💼 Experience",
@@ -46,18 +51,23 @@ const translations = {
     gateSub: "Beantworte alle Fragen richtig, um unsere Geschichte zu öffnen.",
     gateButton: "Aufschliessen 🔓",
     heroKicker: "Für dich, mein Herz",
-    heroSubPrefix: "Wir sind schon seit",
-    heroSubSuffix: "Tagen zusammen",
+    dayLabel: "Tage",
+    hourLabel: "Stunden",
+    minuteLabel: "Minuten",
+    heroSubPrefix: "zusammen, und es geht weiter 💕",
     heroScroll: "↓ Unsere Geschichte ↓",
     storyTitle: "Unser Weg zusammen",
     storySub: "Scroll runter, um jeden Meilenstein zu erleben",
     timelineScrollHint: "scrollen ↓",
     galleryTitle: "Unsere schönsten Momente",
-    gallerySub: "Ein Bild sagt mehr als tausend Worte",
+    gallerySub: "Wische für mehr",
+    ourSongTitle: "Unser Song",
+    ourSongSub: "Der Soundtrack von uns",
     cvTitle: "Unser Beziehungslebenslauf",
-    cvSub: "Bewerbung um die Position: Beste Freundin fürs Leben ❤️",
+    cvSub: "Gemeinsame Bewerbung um die Position: Bestes Paar überhaupt ❤️",
     cvRolePrefix: "Offiziell ein Team seit dem Tag, an dem wir es wussten",
     cvEducation: "🎓 Ausbildung",
+    cvFriendsYears: "Jahrelang erstmal nur Freunde gewesen",
     cvMeeting: "Kennenlernen",
     cvFirstDate: "Erstes Date",
     cvExperienceTitle: "💼 Berufserfahrung",
@@ -111,7 +121,7 @@ const timelineEvents = [
   {
     date: { en: "2025", de: "2025" },
     title: { en: "How we met", de: "Wie wir uns kennengelernt haben" },
-    text: { en: "We met at the St. Gallen Fest — describe here how that day unfolded.", de: "Wir haben uns am St. Gallen Fest kennengelernt — beschreibe hier, wie dieser Tag ablief." },
+    text: { en: "We met at the St. Gallen Party — describe here how that day unfolded.", de: "Wir haben uns an der St. Gallen Party kennengelernt — beschreibe hier, wie dieser Tag ablief." },
     image: ""
   },
   {
@@ -135,36 +145,38 @@ const timelineEvents = [
 ];
 
 const galleryPhotos = [
-  { src: "https://via.placeholder.com/500x500/ff6b9d/ffffff?text=Photo+1", caption: { en: "Photo 1 description", de: "Beschreibung Foto 1" } },
-  { src: "https://via.placeholder.com/500x500/c44dff/ffffff?text=Photo+2", caption: { en: "Photo 2 description", de: "Beschreibung Foto 2" } },
-  { src: "https://via.placeholder.com/500x500/6c5b7b/ffffff?text=Photo+3", caption: { en: "Photo 3 description", de: "Beschreibung Foto 3" } },
-  { src: "https://via.placeholder.com/500x500/f6c453/ffffff?text=Photo+4", caption: { en: "Photo 4 description", de: "Beschreibung Foto 4" } }
+  { src: "https://via.placeholder.com/600x600/ff6b9d/ffffff?text=Photo+1", caption: { en: "Photo 1 description", de: "Beschreibung Foto 1" } },
+  { src: "https://via.placeholder.com/600x600/c44dff/ffffff?text=Photo+2", caption: { en: "Photo 2 description", de: "Beschreibung Foto 2" } },
+  { src: "https://via.placeholder.com/600x600/6c5b7b/ffffff?text=Photo+3", caption: { en: "Photo 3 description", de: "Beschreibung Foto 3" } },
+  { src: "https://via.placeholder.com/600x600/f6c453/ffffff?text=Photo+4", caption: { en: "Photo 4 description", de: "Beschreibung Foto 4" } }
 ];
 
-const cvMeetingDetail = { en: "St. Gallen Fest", de: "St. Gallen Fest" };
+const cvMeetingDetail = { en: "St. Gallen Party", de: "St. Gallen Party" };
 const cvFirstDateDetail = { en: "Hiking to Seealpsee", de: "Wandern zum Seealpsee" };
 
 const cvExperience = {
   en: [
     "Successfully navigated stressful exam periods together",
+    "Went through extremely tough things together — proof we can handle anything",
     "Argument management level: expert (always reconciled within 1 day)",
     "Watched over 100 Netflix episodes together",
     "Countless shared joints and good vibes together 🌿"
   ],
   de: [
     "Gemeinsam durch stressige Prüfungsphasen navigiert",
+    "Gemeinsam extrem schwere Dinge durchgemacht — Beweis, dass wir alles schaffen",
     "Streit-Management-Level: Experte (immer Versöhnung nach spätestens 1 Tag)",
     "Über 100 gemeinsame Netflix-Folgen geschaut",
     "Zahlreiche gemeinsame Joints und gute Vibes 🌿"
   ]
 };
 const cvSkills = {
-  en: ["Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
-  de: ["Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
+  en: ["Best fucking partners, period 😤❤️", "Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
+  de: ["Die besten verdammten Partner, Punkt 😤❤️", "Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
 };
 const cvAchievements = {
-  en: ["Completely conquered each other's hearts", "Made each other the happiest people alive", "Made the best decision of our lives (choosing each other)"],
-  de: ["Haben uns gegenseitig das Herz komplett erobert", "Haben uns gegenseitig zu den glücklichsten Menschen gemacht", "Beste Entscheidung unseres Lebens getroffen (uns füreinander zu entscheiden)"]
+  en: ["Met each other's parents", "Completely conquered each other's hearts", "Made each other the happiest people alive", "Made the best decision of our lives (choosing each other)"],
+  de: ["Eltern kennengelernt", "Haben uns gegenseitig das Herz komplett erobert", "Haben uns gegenseitig zu den glücklichsten Menschen gemacht", "Beste Entscheidung unseres Lebens getroffen (uns füreinander zu entscheiden)"]
 };
 
 const loveLetterText = {
@@ -176,6 +188,7 @@ const fireworkEmojis = ["💗", "💕", "💖", "💘", "✨", "🎆", "🎉", "
 
 const userAnswers = {};
 let selectedFireworkEmojis = ["💗", "✨", "🎉"];
+let carouselIndex = 0;
 
 function t(key) { return translations[currentLang][key]; }
 function getLocalized(obj) { return obj[currentLang] || obj.en; }
@@ -226,16 +239,13 @@ function haversineDistanceKm(lat1, lng1, lat2, lng2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLng = (lng2 - lng1) * Math.PI / 180;
-  const a = Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng / 2) ** 2;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 function renderQuiz() {
   const container = document.getElementById("quizContainer");
   container.innerHTML = "";
-
   quizQuestions.forEach((q, i) => {
     const wrap = document.createElement("div");
     wrap.className = "quiz-question";
@@ -285,21 +295,13 @@ function renderQuiz() {
       const map = L.map(`map-${i}`);
       map.setView([q.lat + (Math.random() - 0.5) * 4, q.lng + (Math.random() - 0.5) * 4], 5);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
-
-      const heartIcon = L.divIcon({
-        html: '<div class="heart-pin">💗</div>',
-        className: "",
-        iconSize: [32, 32],
-        iconAnchor: [16, 30]
-      });
-
+      const heartIcon = L.divIcon({ html: '<div class="heart-pin">💗</div>', className: "", iconSize: [32, 32], iconAnchor: [16, 30] });
       let marker = null;
       map.on("click", (e) => {
         if (marker) map.removeLayer(marker);
         marker = L.marker(e.latlng, { icon: heartIcon }).addTo(map);
         userAnswers[i] = { lat: e.latlng.lat, lng: e.latlng.lng };
       });
-
       if (userAnswers[i] && userAnswers[i].lat) {
         marker = L.marker([userAnswers[i].lat, userAnswers[i].lng], { icon: heartIcon }).addTo(map);
       }
@@ -337,15 +339,21 @@ function checkQuiz() {
   }
 }
 
-function updateDaysCounter() {
+function updateTimeCounter() {
   const now = new Date();
-  const diff = Math.floor((now - relationshipStartDate) / (1000 * 60 * 60 * 24));
-  document.getElementById("daysCount").textContent = diff >= 0 ? diff : 0;
+  let diffMs = now - relationshipStartDate;
+  if (diffMs < 0) diffMs = 0;
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  document.getElementById("daysCount").textContent = days;
+  document.getElementById("hoursCount").textContent = hours;
+  document.getElementById("minutesCount").textContent = minutes;
 }
 
 function renderTimeline() {
   const scrollWrap = document.getElementById("timelineScroll");
-  scrollWrap.querySelectorAll(".timeline-slide").forEach((el) => el.remove());
+  scrollWrap.innerHTML = "";
 
   timelineEvents.forEach((ev, idx) => {
     const slide = document.createElement("div");
@@ -364,60 +372,94 @@ function renderTimeline() {
     scrollWrap.appendChild(slide);
   });
 
-  const fill = document.getElementById("timelineFill");
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         const inner = entry.target.querySelector(".timeline-slide-inner");
         if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-          anime({
-            targets: inner,
-            opacity: [0, 1],
-            translateY: [40, 0],
-            scale: [0.96, 1],
-            duration: 700,
-            easing: "easeOutExpo"
-          });
-          const allSlides = Array.from(scrollWrap.querySelectorAll(".timeline-slide"));
-          const index = allSlides.indexOf(entry.target);
-          const pct = ((index + 1) / allSlides.length) * 100;
-          if (fill) fill.style.height = pct + "%";
+          anime({ targets: inner, opacity: [0, 1], translateY: [40, 0], scale: [0.96, 1], duration: 700, easing: "easeOutExpo" });
         }
       });
     },
     { root: scrollWrap, threshold: 0.6 }
   );
   scrollWrap.querySelectorAll(".timeline-slide").forEach((el) => observer.observe(el));
+
+  const track = document.getElementById("journeyTrack");
+  const trackFill = document.getElementById("journeyTrackFill");
+  const trackDot = document.getElementById("journeyTrackDot");
+
+  function updateTrack() {
+    const maxScroll = scrollWrap.scrollHeight - scrollWrap.clientHeight;
+    const pct = maxScroll > 0 ? Math.min(100, (scrollWrap.scrollTop / maxScroll) * 100) : 0;
+    trackFill.style.height = pct + "%";
+    trackDot.style.top = pct + "%";
+  }
+  scrollWrap.addEventListener("scroll", updateTrack);
+  updateTrack();
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) track.classList.add("visible");
+        else track.classList.remove("visible");
+      });
+    },
+    { threshold: 0.15 }
+  );
+  sectionObserver.observe(document.getElementById("story"));
 }
 
 function renderGallery() {
-  const grid = document.getElementById("galleryGrid");
-  grid.innerHTML = "";
+  const trackEl = document.getElementById("galleryTrack");
+  const dotsEl = document.getElementById("carouselDots");
+  trackEl.innerHTML = "";
+  dotsEl.innerHTML = "";
+
   galleryPhotos.forEach((p) => {
-    const item = document.createElement("div");
-    item.className = "gallery-item";
-    item.innerHTML = `<img src="${p.src}" alt="${getLocalized(p.caption)}"><div class="gallery-caption">${getLocalized(p.caption)}</div>`;
-    grid.appendChild(item);
+    const slide = document.createElement("div");
+    slide.className = "gallery-slide";
+    slide.innerHTML = `<img src="${p.src}" alt="${getLocalized(p.caption)}" draggable="false"><div class="gallery-slide-caption">${getLocalized(p.caption)}</div>`;
+    trackEl.appendChild(slide);
+
+    const dot = document.createElement("div");
+    dot.className = "carousel-dot";
+    dotsEl.appendChild(dot);
   });
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
-        anime({
-          targets: "#galleryGrid .gallery-item",
-          opacity: [0, 1],
-          scale: [0.8, 1],
-          delay: anime.stagger(100),
-          duration: 700,
-          easing: "easeOutExpo"
-        });
-        observer.disconnect();
-      }
-    },
-    { threshold: 0.1 }
-  );
-  observer.observe(grid);
+  carouselIndex = 0;
+  updateCarousel();
+}
+
+function updateCarousel() {
+  const trackEl = document.getElementById("galleryTrack");
+  const total = galleryPhotos.length;
+  carouselIndex = ((carouselIndex % total) + total) % total;
+  trackEl.style.transform = `translateX(-${carouselIndex * 100}%)`;
+  document.querySelectorAll(".carousel-dot").forEach((d, i) => d.classList.toggle("active", i === carouselIndex));
+}
+
+function initCarouselEvents() {
+  const carousel = document.getElementById("galleryCarousel");
+  document.getElementById("carouselPrev").addEventListener("click", () => { carouselIndex--; updateCarousel(); });
+  document.getElementById("carouselNext").addEventListener("click", () => { carouselIndex++; updateCarousel(); });
+  document.getElementById("carouselDots").addEventListener("click", (e) => {
+    if (e.target.classList.contains("carousel-dot")) {
+      carouselIndex = Array.from(document.querySelectorAll(".carousel-dot")).indexOf(e.target);
+      updateCarousel();
+    }
+  });
+
+  let startX = 0;
+  let isDragging = false;
+  carousel.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; isDragging = true; }, { passive: true });
+  carousel.addEventListener("touchend", (e) => {
+    if (!isDragging) return;
+    const deltaX = e.changedTouches[0].clientX - startX;
+    if (deltaX > 50) { carouselIndex--; updateCarousel(); }
+    else if (deltaX < -50) { carouselIndex++; updateCarousel(); }
+    isDragging = false;
+  });
 }
 
 function renderCV() {
@@ -431,14 +473,7 @@ function renderCV() {
   const observer = new IntersectionObserver(
     (entries) => {
       if (entries.some((e) => e.isIntersecting)) {
-        anime({
-          targets: "#cvSkills .skill-tag",
-          opacity: [0, 1],
-          translateY: [15, 0],
-          delay: anime.stagger(80),
-          duration: 500,
-          easing: "easeOutQuad"
-        });
+        anime({ targets: "#cvSkills .skill-tag", opacity: [0, 1], translateY: [15, 0], delay: anime.stagger(80), duration: 500, easing: "easeOutQuad" });
         observer.disconnect();
       }
     },
@@ -455,11 +490,8 @@ function renderFireworkPicker() {
     btn.className = "emoji-option" + (selectedFireworkEmojis.includes(emoji) ? " selected" : "");
     btn.textContent = emoji;
     btn.addEventListener("click", () => {
-      if (selectedFireworkEmojis.includes(emoji)) {
-        selectedFireworkEmojis = selectedFireworkEmojis.filter((e) => e !== emoji);
-      } else {
-        selectedFireworkEmojis.push(emoji);
-      }
+      if (selectedFireworkEmojis.includes(emoji)) selectedFireworkEmojis = selectedFireworkEmojis.filter((e) => e !== emoji);
+      else selectedFireworkEmojis.push(emoji);
       renderFireworkPicker();
     });
     picker.appendChild(btn);
@@ -478,22 +510,11 @@ function launchRandomBursts(stage, emojis, count) {
         particle.style.left = originX + "%";
         particle.style.top = originY + "%";
         stage.appendChild(particle);
-
         const angle = (Math.PI * 2 * i) / 16 + Math.random() * 0.3;
         const distance = 50 + Math.random() * 90;
         const dx = Math.cos(angle) * distance;
         const dy = Math.sin(angle) * distance;
-
-        anime({
-          targets: particle,
-          translateX: dx,
-          translateY: dy,
-          scale: [0.3, 1.2, 0.6],
-          opacity: [1, 1, 0],
-          duration: 1300 + Math.random() * 400,
-          easing: "easeOutExpo",
-          complete: () => particle.remove()
-        });
+        anime({ targets: particle, translateX: dx, translateY: dy, scale: [0.3, 1.2, 0.6], opacity: [1, 1, 0], duration: 1300 + Math.random() * 400, easing: "easeOutExpo", complete: () => particle.remove() });
       }
     }, burst * 320);
   }
@@ -537,26 +558,9 @@ function spellMessageWithEmojis(message, emojis, stage, delayBeforeStart) {
       particle.style.top = (h + 30) + "px";
       particle.style.opacity = "0";
       stage.appendChild(particle);
-
       anime({
-        targets: particle,
-        left: pt.x,
-        top: pt.y,
-        opacity: [0, 1],
-        scale: [0.2, 1],
-        delay: i * 3,
-        duration: 700,
-        easing: "easeOutExpo",
-        complete: () => {
-          anime({
-            targets: particle,
-            opacity: 0,
-            duration: 1400,
-            delay: 2000,
-            easing: "easeInQuad",
-            complete: () => particle.remove()
-          });
-        }
+        targets: particle, left: pt.x, top: pt.y, opacity: [0, 1], scale: [0.2, 1], delay: i * 3, duration: 700, easing: "easeOutExpo",
+        complete: () => { anime({ targets: particle, opacity: 0, duration: 1400, delay: 2000, easing: "easeInQuad", complete: () => particle.remove() }); }
       });
     });
   }, delayBeforeStart);
@@ -566,32 +570,19 @@ function launchFireworks() {
   const stage = document.getElementById("fireworkStage");
   const emojis = selectedFireworkEmojis.length ? selectedFireworkEmojis : ["💗"];
   const message = document.getElementById("fireworkMessage").value.trim();
-
-  if (message) {
-    launchRandomBursts(stage, emojis, 2);
-    spellMessageWithEmojis(message, emojis, stage, 700);
-  } else {
-    launchRandomBursts(stage, emojis, 5);
-  }
+  if (message) { launchRandomBursts(stage, emojis, 2); spellMessageWithEmojis(message, emojis, stage, 700); }
+  else { launchRandomBursts(stage, emojis, 5); }
 }
 
-function clearFireworkStage() {
-  document.getElementById("fireworkStage").innerHTML = "";
-}
+function clearFireworkStage() { document.getElementById("fireworkStage").innerHTML = ""; }
 
 function initMainContent() {
-  updateDaysCounter();
+  updateTimeCounter();
+  setInterval(updateTimeCounter, 1000 * 30);
   renderTimeline();
   renderGallery();
   renderCV();
-
-  anime({
-    targets: ".hero-content",
-    opacity: [0, 1],
-    translateY: [30, 0],
-    duration: 1000,
-    easing: "easeOutExpo"
-  });
+  anime({ targets: ".hero-content", opacity: [0, 1], translateY: [30, 0], duration: 1000, easing: "easeOutExpo" });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -600,11 +591,10 @@ document.addEventListener("DOMContentLoaded", () => {
   createFloatingHearts("heroHearts");
   renderQuiz();
   renderFireworkPicker();
+  initCarouselEvents();
 
   document.getElementById("checkBtn").addEventListener("click", checkQuiz);
-  document.getElementById("langToggle").addEventListener("click", () => {
-    switchLanguage(currentLang === "en" ? "de" : "en");
-  });
+  document.getElementById("langToggle").addEventListener("click", () => switchLanguage(currentLang === "en" ? "de" : "en"));
   document.getElementById("launchBtn").addEventListener("click", launchFireworks);
   document.getElementById("clearBtn").addEventListener("click", clearFireworkStage);
 });
