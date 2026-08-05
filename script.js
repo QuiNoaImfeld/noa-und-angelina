@@ -11,11 +11,10 @@ const quizQuestions = [
   {
     type: "map",
     question: "An welchem Ort sind wir zusammengekommen? Setz einen Herz-Pin auf die Karte 💗",
-    // TODO Noa: echte Koordinaten des Ortes eintragen (Google Maps -> Rechtsklick -> Koordinaten kopieren)
-    lat: 47.3769,
-    lng: 8.5417,
+    lat: 47.42018000286268,
+    lng: 9.270979952465375,
     startZoom: 12,
-    toleranceKm: 1.5,
+    toleranceKm: 3, // Grosszuegige Toleranz, da sie es am Handy antippt
   },
   {
     type: "text",
