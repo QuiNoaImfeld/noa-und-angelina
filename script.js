@@ -364,7 +364,6 @@ function updateTimeCounter() {
   document.getElementById("secondsCount").textContent = seconds;
 }
 
-/* -------- HERO CTA SPECIAL: weisses haariges Monster, 2 Arme, Wangen, Laecheln -------- */
 function initHeroCta() {
   const heartBtn = document.getElementById("heartBtn");
   const heartIcon = heartBtn.querySelector(".heart-btn-icon");
@@ -405,20 +404,16 @@ function initHeroCta() {
     const arriveOffset = 36;
     const fullDistance = (heartRect.left + heartRect.width / 2) - (monsterRect.left + monsterRect.width / 2) - arriveOffset;
 
-    // 1) Kurz von der Seite reinschauen (peeken)
     monster.style.opacity = "1";
     await animatePromise({ targets: monster, translateX: [0, 26], duration: 550, easing: "easeOutQuad" });
 
-    // 2) Herz anschauen
     lookAt(2, 0.5);
     await wait(450);
 
-    // 3) Zurueck zum Betrachter schauen
     lookAt(-1.5, -1);
     await wait(500);
     lookAt(0, 0);
 
-    // 4) Reinspringen (kompletter Hopser ins Bild)
     await animatePromise({
       targets: monster,
       translateX: fullDistance * 0.32,
@@ -428,7 +423,6 @@ function initHeroCta() {
       easing: "easeOutQuad"
     });
 
-    // 5) Mit sichtbar schwingenden Beinen zum Herz laufen
     const steps = 4;
     const startX = fullDistance * 0.32;
     const remaining = fullDistance - startX;
@@ -448,14 +442,12 @@ function initHeroCta() {
     }
     await animatePromise({ targets: [legLeft, legRight], rotate: 0, duration: 220, easing: "easeOutQuad" });
 
-    // 6) Zwei muehsame Fehlversuche (mit dem rechten, herznaeheren Arm)
     await wait(150);
     await attemptPush(30);
     await wait(280);
     await attemptPush(42);
     await wait(320);
 
-    // 7) Dritter Versuch - endlich Erfolg!
     await animatePromise({ targets: monster, translateY: [0, -4, 0], duration: 150, easing: "easeOutQuad" });
     await animatePromise({ targets: armRight, rotate: [0, -75], duration: 280, easing: "easeOutQuad" });
     heartIcon.classList.add("filling");
@@ -463,7 +455,6 @@ function initHeroCta() {
     heartIcon.classList.remove("filling");
     heartIcon.classList.add("filled");
 
-    // 8) Freudentanz - beide Arme gehen hoch!
     animatePromise({ targets: armLeft, rotate: [0, 80, 60, 80], duration: 750, easing: "easeOutQuad" });
     await animatePromise({
       targets: monster,
@@ -599,17 +590,49 @@ function renderCV() {
   document.getElementById("cvSkills").innerHTML = getLocalized(cvSkills).map((s) => `<span class="skill-tag">${s}</span>`).join("");
   document.getElementById("cvAchievements").innerHTML = getLocalized(cvAchievements).map((a) => `<li>${a}</li>`).join("");
   document.getElementById("loveLetterText").textContent = getLocalized(loveLetterText);
+  initCvOrbit();
+}
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
-        anime({ targets: "#cvSkills .skill-tag", opacity: [0, 1], translateY: [15, 0], delay: anime.stagger(80), duration: 500, easing: "easeOutQuad" });
-        observer.disconnect();
+/* -------- CV ORBIT: Karten wandern beim Scrollen von unten-links durch die
+   Mitte (an der rotierenden Achse vorbei) nach oben-rechts -------- */
+let cvOrbitBound = false;
+function initCvOrbit() {
+  const cards = document.querySelectorAll(".cv-orbit-card");
+  if (!cards.length) return;
+
+  function update() {
+    const viewportCenter = window.innerHeight / 2;
+    const range = window.innerHeight * 0.85;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.top + rect.height / 2;
+      let progress = (cardCenter - viewportCenter) / range;
+      progress = Math.max(-1, Math.min(1, progress));
+
+      const x = -progress * 170;
+      const y = progress * 170;
+      const opacity = Math.max(0, 1 - Math.pow(Math.abs(progress), 1.25));
+      const scale = 0.72 + 0.28 * (1 - Math.abs(progress));
+      const rotate = progress * 14;
+
+      card.style.transform = `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`;
+      card.style.opacity = opacity;
+      card.style.zIndex = Math.round((1 - Math.abs(progress)) * 10);
+    });
+  }
+
+  update();
+  if (!cvOrbitBound) {
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => { update(); ticking = false; });
+        ticking = true;
       }
-    },
-    { threshold: 0.2 }
-  );
-  observer.observe(document.getElementById("cvSkills"));
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    cvOrbitBound = true;
+  }
 }
 
 function renderFireworkPicker() {
