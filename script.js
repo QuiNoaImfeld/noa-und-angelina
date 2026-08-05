@@ -195,9 +195,6 @@ let carouselIndex = 0;
 function t(key) { return translations[currentLang][key]; }
 function getLocalized(obj) { return obj[currentLang] || obj.en; }
 
-/* WICHTIG: anime.js v3 gibt KEIN Promise/.finished zurueck - dieser Wrapper
-   macht animate()-Aufrufe "awaitable", damit Sequenzen wirklich Schritt fuer
-   Schritt (statt alle sofort) ablaufen. */
 function animatePromise(params) {
   return new Promise((resolve) => {
     anime(Object.assign({}, params, { complete: resolve }));
@@ -367,7 +364,7 @@ function updateTimeCounter() {
   document.getElementById("secondsCount").textContent = seconds;
 }
 
-/* -------- HERO CTA SPECIAL: weisses haariges Monster mit Augen, Armen und Beinen -------- */
+/* -------- HERO CTA SPECIAL: weisses haariges Monster, 2 Arme, Wangen, Laecheln -------- */
 function initHeroCta() {
   const heartBtn = document.getElementById("heartBtn");
   const heartIcon = heartBtn.querySelector(".heart-btn-icon");
@@ -376,7 +373,8 @@ function initHeroCta() {
   const pupilRight = document.getElementById("pupilRight");
   const legLeft = document.getElementById("legLeft");
   const legRight = document.getElementById("legRight");
-  const arm = monster.querySelector(".monster-arm");
+  const armRight = document.getElementById("armRight");
+  const armLeft = document.getElementById("armLeft");
   let isAnimating = false;
 
   function lookAt(x, y) {
@@ -386,10 +384,10 @@ function initHeroCta() {
 
   async function attemptPush(force) {
     await animatePromise({ targets: monster, translateY: [0, -3, 0], duration: 160, easing: "easeOutQuad" });
-    await animatePromise({ targets: arm, rotate: [0, -force], duration: 240, easing: "easeOutQuad" });
+    await animatePromise({ targets: armRight, rotate: [0, -force], duration: 240, easing: "easeOutQuad" });
     animatePromise({ targets: heartIcon, scale: [1, 1 + force / 350, 1], duration: 280, easing: "easeOutQuad" });
     await wait(120);
-    await animatePromise({ targets: arm, rotate: 0, duration: 260, easing: "easeInQuad" });
+    await animatePromise({ targets: armRight, rotate: 0, duration: 260, easing: "easeInQuad" });
     await animatePromise({ targets: monster, translateX: "-=4", duration: 130, easing: "easeOutQuad" });
     await animatePromise({ targets: monster, translateX: "+=4", duration: 180, easing: "easeOutQuad" });
   }
@@ -398,14 +396,13 @@ function initHeroCta() {
     if (isAnimating) return;
     isAnimating = true;
 
-    // Ausgangszustand zuruecksetzen
     monster.style.opacity = "0";
     monster.style.transform = "translateX(0) translateY(0)";
     lookAt(0, 0);
 
     const heartRect = heartBtn.getBoundingClientRect();
     const monsterRect = monster.getBoundingClientRect();
-    const arriveOffset = 34;
+    const arriveOffset = 36;
     const fullDistance = (heartRect.left + heartRect.width / 2) - (monsterRect.left + monsterRect.width / 2) - arriveOffset;
 
     // 1) Kurz von der Seite reinschauen (peeken)
@@ -451,7 +448,7 @@ function initHeroCta() {
     }
     await animatePromise({ targets: [legLeft, legRight], rotate: 0, duration: 220, easing: "easeOutQuad" });
 
-    // 6) Zwei muehsame Fehlversuche
+    // 6) Zwei muehsame Fehlversuche (mit dem rechten, herznaeheren Arm)
     await wait(150);
     await attemptPush(30);
     await wait(280);
@@ -460,13 +457,14 @@ function initHeroCta() {
 
     // 7) Dritter Versuch - endlich Erfolg!
     await animatePromise({ targets: monster, translateY: [0, -4, 0], duration: 150, easing: "easeOutQuad" });
-    await animatePromise({ targets: arm, rotate: [0, -75], duration: 280, easing: "easeOutQuad" });
+    await animatePromise({ targets: armRight, rotate: [0, -75], duration: 280, easing: "easeOutQuad" });
     heartIcon.classList.add("filling");
     await animatePromise({ targets: heartIcon, scale: [1, 1.4, 1], duration: 550, easing: "easeOutElastic(1, .6)" });
     heartIcon.classList.remove("filling");
     heartIcon.classList.add("filled");
 
-    // 8) Freudentanz
+    // 8) Freudentanz - beide Arme gehen hoch!
+    animatePromise({ targets: armLeft, rotate: [0, 80, 60, 80], duration: 750, easing: "easeOutQuad" });
     await animatePromise({
       targets: monster,
       translateY: [0, -26, 0, -18, 0],
@@ -474,7 +472,7 @@ function initHeroCta() {
       duration: 750,
       easing: "easeOutQuad"
     });
-    animatePromise({ targets: [legLeft, legRight, arm], rotate: 0, duration: 200 });
+    animatePromise({ targets: [legLeft, legRight, armRight, armLeft], rotate: 0, duration: 200 });
 
     await animatePromise({ targets: monster, opacity: 0, duration: 350, easing: "easeInQuad" });
 
