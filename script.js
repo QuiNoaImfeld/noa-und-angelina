@@ -333,6 +333,7 @@ function checkQuiz() {
   if (allCorrect) {
     document.getElementById("gate").classList.add("hidden");
     document.getElementById("mainContent").classList.remove("hidden");
+    document.getElementById("scrollScrubber").classList.remove("hidden");
     initMainContent();
   } else {
     errorEl.textContent = t("quizError");
@@ -349,6 +350,44 @@ function updateTimeCounter() {
   document.getElementById("daysCount").textContent = days;
   document.getElementById("hoursCount").textContent = hours;
   document.getElementById("minutesCount").textContent = minutes;
+}
+
+function initScrollScrubber() {
+  const ticksWrap = document.getElementById("scrubberTicks");
+  ticksWrap.innerHTML = "";
+
+  const tickCount = 40;
+  for (let i = 0; i < tickCount; i++) {
+    const tick = document.createElement("div");
+    tick.className = "scrubber-tick";
+    ticksWrap.appendChild(tick);
+  }
+
+  const fillLayer = document.createElement("div");
+  fillLayer.className = "scrubber-fill";
+  for (let i = 0; i < tickCount; i++) {
+    const tick = document.createElement("div");
+    tick.className = "scrubber-tick";
+    fillLayer.appendChild(tick);
+  }
+  ticksWrap.appendChild(fillLayer);
+
+  const playhead = document.createElement("div");
+  playhead.className = "scrubber-playhead";
+  ticksWrap.appendChild(playhead);
+
+  function updateScrubber() {
+    const doc = document.documentElement;
+    const scrollTop = window.scrollY || doc.scrollTop;
+    const maxScroll = doc.scrollHeight - window.innerHeight;
+    const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
+    fillLayer.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    playhead.style.left = pct + "%";
+  }
+
+  window.addEventListener("scroll", updateScrubber, { passive: true });
+  window.addEventListener("resize", updateScrubber);
+  updateScrubber();
 }
 
 function renderTimeline() {
@@ -582,6 +621,7 @@ function initMainContent() {
   renderTimeline();
   renderGallery();
   renderCV();
+  initScrollScrubber();
   anime({ targets: ".hero-content", opacity: [0, 1], translateY: [30, 0], duration: 1000, easing: "easeOutExpo" });
 }
 
