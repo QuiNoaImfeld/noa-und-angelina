@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="style.css?v=15">
 </head>
 <body>
 
@@ -41,7 +41,6 @@
     <div class="floating-hearts" id="heroHearts"></div>
     <div class="hero-overlay"></div>
 
-    <!-- Monster aus CSS-Formen gebaut: weiss, haarig, niedlich mit Wangen, Laecheln, 2 Armen -->
     <div class="monster" id="runner">
       <div class="monster-arm left" id="armLeft"></div>
       <div class="monster-arm right" id="armRight"></div>
@@ -124,39 +123,53 @@
     </div>
   </section>
 
+  <!-- BEZIEHUNGSLEBENSLAUF: rotierende Achse mit scroll-gesteuerten Orbit-Karten -->
   <section id="cv" class="cv-section">
     <h2 class="section-title" data-i18n="cvTitle">Our Relationship CV</h2>
     <p class="section-sub" data-i18n="cvSub">Joint application for the position: Best Couple Ever ❤️</p>
 
-    <div class="cv-card">
-      <div class="cv-header">
-        <div class="cv-photo-placeholder">📷</div>
-        <div>
-          <h3>Noa &amp; Angelina (Angi / Angel)</h3>
-          <p class="cv-role"><span data-i18n="cvRolePrefix">Officially a team since the day we knew</span> <span id="cvStartDate">20.12.2025</span></p>
+    <div class="cv-intro">
+      <div class="cv-photo-placeholder">📷</div>
+      <div>
+        <h3>Noa &amp; Angelina (Angi / Angel)</h3>
+        <p class="cv-role"><span data-i18n="cvRolePrefix">Officially a team since the day we knew</span> <span id="cvStartDate">20.12.2025</span></p>
+      </div>
+    </div>
+
+    <div class="cv-orbit-wrap">
+      <div class="cv-axis-track" id="cvAxisTrack">
+        <div class="cv-axis">
+          <div class="vertebra"></div>
+          <div class="vertebra"></div>
+          <div class="vertebra"></div>
+          <div class="vertebra"></div>
+          <div class="vertebra"></div>
+          <div class="vertebra"></div>
         </div>
       </div>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvEducation">🎓 Education</h4>
-        <p><span data-i18n="cvFriendsYears">Years of being just friends first</span></p>
-        <p><span data-i18n="cvMeeting">Meeting each other</span> — <em id="cvMeetingDetail"></em></p>
-        <p><span data-i18n="cvFirstDate">First date</span> — <em id="cvFirstDateDetail"></em></p>
-      </div>
+      <div class="cv-orbit-cards" id="cvOrbitCards">
+        <div class="cv-orbit-card">
+          <h4 data-i18n="cvEducation">🎓 Education</h4>
+          <p><span data-i18n="cvFriendsYears">Years of being just friends first</span></p>
+          <p><span data-i18n="cvMeeting">Meeting each other</span> — <em id="cvMeetingDetail"></em></p>
+          <p><span data-i18n="cvFirstDate">First date</span> — <em id="cvFirstDateDetail"></em></p>
+        </div>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvExperienceTitle">💼 Experience</h4>
-        <ul id="cvExperience"></ul>
-      </div>
+        <div class="cv-orbit-card">
+          <h4 data-i18n="cvExperienceTitle">💼 Experience</h4>
+          <ul id="cvExperience"></ul>
+        </div>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvSkillsTitle">⭐ Skills & Strengths</h4>
-        <div class="skills" id="cvSkills"></div>
-      </div>
+        <div class="cv-orbit-card">
+          <h4 data-i18n="cvSkillsTitle">⭐ Skills & Strengths</h4>
+          <div class="skills" id="cvSkills"></div>
+        </div>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvAchievementsTitle">🏆 Achievements</h4>
-        <ul id="cvAchievements"></ul>
+        <div class="cv-orbit-card">
+          <h4 data-i18n="cvAchievementsTitle">🏆 Achievements</h4>
+          <ul id="cvAchievements"></ul>
+        </div>
       </div>
     </div>
   </section>
@@ -193,6 +206,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-<script src="script.js?v=14"></script>
+<script src="script.js?v=15"></script>
 </body>
 </html>
