@@ -5,10 +5,13 @@
 
 const relationshipStartDate = new Date("2025-12-20"); // Noa & Angelina
 
+/* WICHTIG bei Textfragen: 'acceptedAnswers' ist eine Liste von Stichworten.
+   Es reicht, wenn die Eingabe EINES dieser Stichworte enthaelt (Gross/Kleinschreibung egal). */
 const quizQuestions = [
   {
     type: "map",
     question: "An welchem Ort sind wir zusammengekommen? Setz einen Herz-Pin auf die Karte 💗",
+    // TODO Noa: echte Koordinaten des Ortes eintragen (Google Maps -> Rechtsklick -> Koordinaten kopieren)
     lat: 47.3769,
     lng: 8.5417,
     startZoom: 12,
@@ -16,19 +19,19 @@ const quizQuestions = [
   },
   {
     type: "text",
-    question: "Wie heißt mein Kosename für dich? (Angi, Angel...)",
-    correctAnswer: "Angel"
+    question: "Wie heißt mein Kosename für dich?",
+    acceptedAnswers: ["angel", "angi"]
   },
   {
     type: "single",
     question: "Was war unser erstes gemeinsames Date?",
-    options: ["Option A", "Option B", "Option C", "Option D"],
-    correctIndex: 0
+    options: ["Kino", "Wandern am Seealpsee", "Essen gehen", "Spaziergang am See"],
+    correctIndex: 1
   },
   {
     type: "text",
     question: "An welchem Tag und Monat sind wir zusammengekommen?",
-    correctAnswer: "20.12"
+    acceptedAnswers: ["20.12", "20 dezember", "20. dezember"]
   }
 ];
 
@@ -42,7 +45,7 @@ const timelineEvents = [
   {
     date: "2025",
     title: "Unser erstes Date",
-    text: "Erzähl die Geschichte von eurem ersten Date - was ihr gemacht habt, wie ihr euch gefühlt habt.",
+    text: "Wandern am Seealpsee — beschreibe hier den Tag genauer, was ihr erlebt und gefühlt habt.",
     image: ""
   },
   {
@@ -197,8 +200,8 @@ function checkQuiz() {
       if (userAnswers[i] !== q.correctIndex) allCorrect = false;
     } else if (q.type === "text") {
       const given = (userAnswers[i] || "").trim().toLowerCase();
-      const correct = q.correctAnswer.trim().toLowerCase();
-      if (given !== correct) allCorrect = false;
+      const matches = q.acceptedAnswers.some((ans) => given.includes(ans.toLowerCase()));
+      if (!matches) allCorrect = false;
     } else if (q.type === "map") {
       const given = userAnswers[i];
       if (!given) {
