@@ -16,24 +16,26 @@ const translations = {
     heroSubSuffix: "days",
     heroScroll: "↓ Our story ↓",
     storyTitle: "Our journey together",
-    storySub: "Every moment that brought us here",
+    storySub: "Scroll down to relive every milestone",
+    timelineScrollHint: "scroll ↓",
     galleryTitle: "Our favorite moments",
     gallerySub: "A picture says more than a thousand words",
     cvTitle: "Our Relationship CV",
     cvSub: "Application for the position: Best Girlfriend for Life ❤️",
-    cvRolePrefix: "Current position: In love since",
+    cvRolePrefix: "Officially a team since the day we knew",
     cvEducation: "🎓 Education",
     cvMeeting: "Meeting each other",
     cvFirstDate: "First date",
     cvExperienceTitle: "💼 Experience",
     cvSkillsTitle: "⭐ Skills & Strengths",
     cvAchievementsTitle: "🏆 Achievements",
-    letterTitle: "Finally, Angel...",
+    letterTitle: "Love Letter",
     letterFireworkBtn: "Go to the Firework Lab 🎆",
     fwTitle: "Firework Lab",
-    fwSub: "Pick your favorite symbols and light up the sky",
+    fwSub: "Pick your favorite symbols, add a message, and light up the sky",
     fwLaunch: "Launch 🚀",
     fwClear: "Clear",
+    fwMessagePlaceholder: "Type a message (optional)...",
     footerText: "Made with ❤️ by Noa for Angelina · Since 20.12.2025",
     quizError: "Not quite right... try again! 💭",
     quizMapHint: "Tip: Zoom with the scroll wheel, then click the place to drop the heart pin.",
@@ -48,24 +50,26 @@ const translations = {
     heroSubSuffix: "Tagen zusammen",
     heroScroll: "↓ Unsere Geschichte ↓",
     storyTitle: "Unser Weg zusammen",
-    storySub: "Jeder Moment, der uns hierher gebracht hat",
+    storySub: "Scroll runter, um jeden Meilenstein zu erleben",
+    timelineScrollHint: "scrollen ↓",
     galleryTitle: "Unsere schönsten Momente",
     gallerySub: "Ein Bild sagt mehr als tausend Worte",
     cvTitle: "Unser Beziehungslebenslauf",
     cvSub: "Bewerbung um die Position: Beste Freundin fürs Leben ❤️",
-    cvRolePrefix: "Aktuelle Position: Verliebt seit dem",
+    cvRolePrefix: "Offiziell ein Team seit dem Tag, an dem wir es wussten",
     cvEducation: "🎓 Ausbildung",
     cvMeeting: "Kennenlernen",
     cvFirstDate: "Erstes Date",
     cvExperienceTitle: "💼 Berufserfahrung",
     cvSkillsTitle: "⭐ Fähigkeiten & Stärken",
     cvAchievementsTitle: "🏆 Erfolge",
-    letterTitle: "Zum Schluss, Angel...",
+    letterTitle: "Liebesbrief",
     letterFireworkBtn: "Zum Feuerwerk-Labor 🎆",
     fwTitle: "Feuerwerk-Labor",
-    fwSub: "Wähl deine Lieblingssymbole und erleuchte den Himmel",
+    fwSub: "Wähl deine Lieblingssymbole, schreib eine Nachricht und erleuchte den Himmel",
     fwLaunch: "Zünden 🚀",
     fwClear: "Löschen",
+    fwMessagePlaceholder: "Schreib eine Nachricht (optional)...",
     footerText: "Gemacht mit ❤️ von Noa für Angelina · Seit dem 20.12.2025",
     quizError: "Nicht ganz richtig... versuch es nochmal! 💭",
     quizMapHint: "Tipp: Zoom mit dem Mausrad, dann auf den Ort klicken, um den Herz-Pin zu setzen.",
@@ -73,8 +77,6 @@ const translations = {
   }
 };
 
-/* WICHTIG: Reihenfolge = Anzeige-Reihenfolge im Quiz. Bewusst 4 verschiedene Fragen:
-   0 = Karte, 1 = Kosename (Text), 2 = Erstes Date (Multiple Choice), 3 = Datum (Text) */
 const quizQuestions = [
   {
     type: "map",
@@ -109,13 +111,13 @@ const timelineEvents = [
   {
     date: { en: "2025", de: "2025" },
     title: { en: "How we met", de: "Wie wir uns kennengelernt haben" },
-    text: { en: "Describe here where and how you first met.", de: "Beschreibe hier, wo und wie ihr euch das erste Mal getroffen habt." },
+    text: { en: "We met at the St. Gallen Fest — describe here how that day unfolded.", de: "Wir haben uns am St. Gallen Fest kennengelernt — beschreibe hier, wie dieser Tag ablief." },
     image: ""
   },
   {
     date: { en: "2025", de: "2025" },
     title: { en: "Our first date", de: "Unser erstes Date" },
-    text: { en: "Hiking at Seealpsee — describe the day in more detail, what you experienced and felt.", de: "Wandern am Seealpsee — beschreibe hier den Tag genauer, was ihr erlebt und gefühlt habt." },
+    text: { en: "Hiking to Seealpsee — describe the day in more detail, what you experienced and felt.", de: "Wandern zum Seealpsee — beschreibe hier den Tag genauer, was ihr erlebt und gefühlt habt." },
     image: ""
   },
   {
@@ -139,30 +141,35 @@ const galleryPhotos = [
   { src: "https://via.placeholder.com/500x500/f6c453/ffffff?text=Photo+4", caption: { en: "Photo 4 description", de: "Beschreibung Foto 4" } }
 ];
 
+const cvMeetingDetail = { en: "St. Gallen Fest", de: "St. Gallen Fest" };
+const cvFirstDateDetail = { en: "Hiking to Seealpsee", de: "Wandern zum Seealpsee" };
+
 const cvExperience = {
   en: [
     "Successfully navigated stressful exam periods together",
     "Argument management level: expert (always reconciled within 1 day)",
-    "Watched over 100 Netflix episodes together"
+    "Watched over 100 Netflix episodes together",
+    "Countless shared joints and good vibes together 🌿"
   ],
   de: [
     "Gemeinsam durch stressige Prüfungsphasen navigiert",
     "Streit-Management-Level: Experte (immer Versöhnung nach spätestens 1 Tag)",
-    "Über 100 gemeinsame Netflix-Folgen geschaut"
+    "Über 100 gemeinsame Netflix-Folgen geschaut",
+    "Zahlreiche gemeinsame Joints und gute Vibes 🌿"
   ]
 };
 const cvSkills = {
-  en: ["Best listener", "Hugging expert", "Always cheers me up", "World-class patience"],
-  de: ["Beste Zuhörerin", "Umarmungs-Expertin", "Kann mich immer aufmuntern", "Geduld auf Weltklasse-Niveau"]
+  en: ["Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
+  de: ["Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
 };
 const cvAchievements = {
-  en: ["Completely conquered my heart", "Made me the happiest person alive", "Made the best decision of my life (saying yes to you)"],
-  de: ["Hat mein Herz komplett erobert", "Hat mich zum glücklichsten Menschen gemacht", "Beste Entscheidung meines Lebens getroffen (Ja zu dir zu sagen)"]
+  en: ["Completely conquered each other's hearts", "Made each other the happiest people alive", "Made the best decision of our lives (choosing each other)"],
+  de: ["Haben uns gegenseitig das Herz komplett erobert", "Haben uns gegenseitig zu den glücklichsten Menschen gemacht", "Beste Entscheidung unseres Lebens getroffen (uns füreinander zu entscheiden)"]
 };
 
 const loveLetterText = {
-  en: `My dear Angi,\n\nsince December 20th my life has completely changed.\nYou make me laugh every day, you believe in me when I don't believe in myself,\nand with you every moment feels right.\n\nThank you for being you. I love you more than words could ever say.\n\nForever yours,\nNoa ❤️`,
-  de: `Meine liebe Angi,\n\nseit dem 20. Dezember hat sich mein Leben komplett verändert.\nDu bringst mich jeden Tag zum Lachen, du glaubst an mich, wenn ich es selbst nicht tue,\nund mit dir fühlt sich jeder Moment richtig an.\n\nDanke, dass du du bist. Ich liebe dich mehr, als Worte es je ausdrücken könnten.\n\nFür immer dein,\nNoa ❤️`
+  en: `My dear Angi,\n\nsince December 20th my life has completely changed.\nYou make me laugh every day, you believe in me when I don't believe in myself,\nand with you every moment feels right.\n\nThank you for being you. I love you more than words could ever say.\n\nForever yours,`,
+  de: `Meine liebe Angi,\n\nseit dem 20. Dezember hat sich mein Leben komplett verändert.\nDu bringst mich jeden Tag zum Lachen, du glaubst an mich, wenn ich es selbst nicht tue,\nund mit dir fühlt sich jeder Moment richtig an.\n\nDanke, dass du du bist. Ich liebe dich mehr, als Worte es je ausdrücken könnten.\n\nFür immer dein,`
 };
 
 const fireworkEmojis = ["💗", "💕", "💖", "💘", "✨", "🎆", "🎉", "⭐", "🌸", "🔥"];
@@ -170,20 +177,19 @@ const fireworkEmojis = ["💗", "💕", "💖", "💘", "✨", "🎆", "🎉", "
 const userAnswers = {};
 let selectedFireworkEmojis = ["💗", "✨", "🎉"];
 
-function t(key) {
-  return translations[currentLang][key];
-}
+function t(key) { return translations[currentLang][key]; }
+function getLocalized(obj) { return obj[currentLang] || obj.en; }
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
     if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
   });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
+  });
   document.getElementById("langToggle").textContent = currentLang === "en" ? "🌐 DE" : "🌐 EN";
-}
-
-function getLocalized(obj) {
-  return obj[currentLang] || obj.en;
 }
 
 function switchLanguage(lang) {
@@ -278,11 +284,8 @@ function renderQuiz() {
     if (q.type === "map") {
       const map = L.map(`map-${i}`);
       map.setView([q.lat + (Math.random() - 0.5) * 4, q.lng + (Math.random() - 0.5) * 4], 5);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-      }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
 
-      /* Herz IST der Pin - kein separates Nadel-Symbol mehr, Spitze des Herzens = Ort */
       const heartIcon = L.divIcon({
         html: '<div class="heart-pin">💗</div>',
         className: "",
@@ -300,7 +303,6 @@ function renderQuiz() {
       if (userAnswers[i] && userAnswers[i].lat) {
         marker = L.marker([userAnswers[i].lat, userAnswers[i].lng], { icon: heartIcon }).addTo(map);
       }
-
       mapInstances[i] = map;
     }
   });
@@ -317,9 +319,8 @@ function checkQuiz() {
       if (!matches) allCorrect = false;
     } else if (q.type === "map") {
       const given = userAnswers[i];
-      if (!given) {
-        allCorrect = false;
-      } else {
+      if (!given) { allCorrect = false; }
+      else {
         const dist = haversineDistanceKm(given.lat, given.lng, q.lat, q.lng);
         if (dist > q.toleranceKm) allCorrect = false;
       }
@@ -343,48 +344,51 @@ function updateDaysCounter() {
 }
 
 function renderTimeline() {
-  const wrap = document.getElementById("timelineWrap");
-  wrap.querySelectorAll(".timeline-item").forEach((el) => el.remove());
+  const scrollWrap = document.getElementById("timelineScroll");
+  scrollWrap.querySelectorAll(".timeline-slide").forEach((el) => el.remove());
 
-  timelineEvents.forEach((ev) => {
-    const item = document.createElement("div");
-    item.className = "timeline-item";
-    item.innerHTML = `
-      <div class="timeline-date">${getLocalized(ev.date)}</div>
-      <h3>${getLocalized(ev.title)}</h3>
-      <p>${getLocalized(ev.text)}</p>
-      ${ev.image ? `<img src="${ev.image}" alt="${getLocalized(ev.title)}">` : ""}
+  timelineEvents.forEach((ev, idx) => {
+    const slide = document.createElement("div");
+    slide.className = "timeline-slide";
+    slide.innerHTML = `
+      <div class="timeline-slide-inner">
+        <div class="timeline-slide-dot"></div>
+        <div class="timeline-slide-number">${idx + 1} / ${timelineEvents.length}</div>
+        <div class="timeline-slide-date">${getLocalized(ev.date)}</div>
+        <h3>${getLocalized(ev.title)}</h3>
+        <p>${getLocalized(ev.text)}</p>
+        ${ev.image ? `<img src="${ev.image}" alt="${getLocalized(ev.title)}">` : ""}
+        ${idx === 0 ? `<div class="timeline-scroll-hint">${t("timelineScrollHint")}</div>` : ""}
+      </div>
     `;
-    wrap.appendChild(item);
+    scrollWrap.appendChild(slide);
   });
 
-  const lineAnim = anime({
-    targets: "#timelineLine",
-    scaleY: [0, 1],
-    easing: "easeInOutSine",
-    duration: 1200,
-    autoplay: false
-  });
-  lineAnim.play();
+  const fill = document.getElementById("timelineFill");
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        const inner = entry.target.querySelector(".timeline-slide-inner");
+        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
           anime({
-            targets: entry.target,
+            targets: inner,
             opacity: [0, 1],
-            translateX: [-40, 0],
-            duration: 800,
+            translateY: [40, 0],
+            scale: [0.96, 1],
+            duration: 700,
             easing: "easeOutExpo"
           });
-          observer.unobserve(entry.target);
+          const allSlides = Array.from(scrollWrap.querySelectorAll(".timeline-slide"));
+          const index = allSlides.indexOf(entry.target);
+          const pct = ((index + 1) / allSlides.length) * 100;
+          if (fill) fill.style.height = pct + "%";
         }
       });
     },
-    { threshold: 0.2 }
+    { root: scrollWrap, threshold: 0.6 }
   );
-  document.querySelectorAll(".timeline-item").forEach((el) => observer.observe(el));
+  scrollWrap.querySelectorAll(".timeline-slide").forEach((el) => observer.observe(el));
 }
 
 function renderGallery() {
@@ -417,6 +421,8 @@ function renderGallery() {
 }
 
 function renderCV() {
+  document.getElementById("cvMeetingDetail").textContent = getLocalized(cvMeetingDetail);
+  document.getElementById("cvFirstDateDetail").textContent = getLocalized(cvFirstDateDetail);
   document.getElementById("cvExperience").innerHTML = getLocalized(cvExperience).map((e) => `<li>${e}</li>`).join("");
   document.getElementById("cvSkills").innerHTML = getLocalized(cvSkills).map((s) => `<span class="skill-tag">${s}</span>`).join("");
   document.getElementById("cvAchievements").innerHTML = getLocalized(cvAchievements).map((a) => `<li>${a}</li>`).join("");
@@ -460,15 +466,12 @@ function renderFireworkPicker() {
   });
 }
 
-function launchFireworks() {
-  const stage = document.getElementById("fireworkStage");
-  const emojis = selectedFireworkEmojis.length ? selectedFireworkEmojis : ["💗"];
-
-  for (let burst = 0; burst < 5; burst++) {
+function launchRandomBursts(stage, emojis, count) {
+  for (let burst = 0; burst < count; burst++) {
     setTimeout(() => {
       const originX = 15 + Math.random() * 70;
-      const originY = 30 + Math.random() * 40;
-      for (let i = 0; i < 18; i++) {
+      const originY = 20 + Math.random() * 35;
+      for (let i = 0; i < 16; i++) {
         const particle = document.createElement("div");
         particle.className = "firework-particle";
         particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
@@ -476,8 +479,8 @@ function launchFireworks() {
         particle.style.top = originY + "%";
         stage.appendChild(particle);
 
-        const angle = (Math.PI * 2 * i) / 18 + Math.random() * 0.3;
-        const distance = 60 + Math.random() * 100;
+        const angle = (Math.PI * 2 * i) / 16 + Math.random() * 0.3;
+        const distance = 50 + Math.random() * 90;
         const dx = Math.cos(angle) * distance;
         const dy = Math.sin(angle) * distance;
 
@@ -487,12 +490,88 @@ function launchFireworks() {
           translateY: dy,
           scale: [0.3, 1.2, 0.6],
           opacity: [1, 1, 0],
-          duration: 1400 + Math.random() * 400,
+          duration: 1300 + Math.random() * 400,
           easing: "easeOutExpo",
           complete: () => particle.remove()
         });
       }
-    }, burst * 350);
+    }, burst * 320);
+  }
+}
+
+function spellMessageWithEmojis(message, emojis, stage, delayBeforeStart) {
+  const w = stage.clientWidth;
+  const h = stage.clientHeight;
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  const fontSize = Math.max(20, Math.min(70, (w / message.length) * 1.5));
+  ctx.font = `bold ${fontSize}px Poppins, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#fff";
+  ctx.fillText(message.toUpperCase(), w / 2, h / 2);
+
+  const imageData = ctx.getImageData(0, 0, w, h).data;
+  const gap = 5;
+  const points = [];
+  for (let y = 0; y < h; y += gap) {
+    for (let x = 0; x < w; x += gap) {
+      const idx = (y * w + x) * 4;
+      if (imageData[idx + 3] > 128) points.push({ x, y });
+    }
+  }
+  for (let i = points.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [points[i], points[j]] = [points[j], points[i]];
+  }
+  const chosen = points.slice(0, 260);
+
+  setTimeout(() => {
+    chosen.forEach((pt, i) => {
+      const particle = document.createElement("div");
+      particle.className = "firework-particle";
+      particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      particle.style.left = pt.x + "px";
+      particle.style.top = (h + 30) + "px";
+      particle.style.opacity = "0";
+      stage.appendChild(particle);
+
+      anime({
+        targets: particle,
+        left: pt.x,
+        top: pt.y,
+        opacity: [0, 1],
+        scale: [0.2, 1],
+        delay: i * 3,
+        duration: 700,
+        easing: "easeOutExpo",
+        complete: () => {
+          anime({
+            targets: particle,
+            opacity: 0,
+            duration: 1400,
+            delay: 2000,
+            easing: "easeInQuad",
+            complete: () => particle.remove()
+          });
+        }
+      });
+    });
+  }, delayBeforeStart);
+}
+
+function launchFireworks() {
+  const stage = document.getElementById("fireworkStage");
+  const emojis = selectedFireworkEmojis.length ? selectedFireworkEmojis : ["💗"];
+  const message = document.getElementById("fireworkMessage").value.trim();
+
+  if (message) {
+    launchRandomBursts(stage, emojis, 2);
+    spellMessageWithEmojis(message, emojis, stage, 700);
+  } else {
+    launchRandomBursts(stage, emojis, 5);
   }
 }
 
