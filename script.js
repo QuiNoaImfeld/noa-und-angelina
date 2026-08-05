@@ -9,7 +9,7 @@ let currentLang = "en";
 const translations = {
   en: {
     gateTitle: "Before you go any further",
-    gateSub: "Answer these to unlock our story.",
+    gateSub: "Answer these to unlock our story ❤",
     gateButton: "Unlock",
     heroKicker: "For you, my heart",
     dayLabel: "days",
@@ -48,7 +48,7 @@ const translations = {
   },
   de: {
     gateTitle: "Bevor du weiter darfst",
-    gateSub: "Beantworte diese Fragen, um unsere Geschichte zu öffnen.",
+    gateSub: "Beantworte diese Fragen, um unsere Geschichte zu öffnen ❤",
     gateButton: "Aufschliessen",
     heroKicker: "Für dich, mein Herz",
     dayLabel: "Tage",
@@ -171,8 +171,8 @@ const cvExperience = {
   ]
 };
 const cvSkills = {
-  en: ["Best fucking partners 😤❤️", "Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
-  de: ["Die besten verdammten Partner 😤❤️", "Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
+  en: ["Best fucking partners ❤️", "Best listeners for each other", "Hugging experts", "Always cheer each other up", "World-class patience with one another"],
+  de: ["Die besten verdammten Partner ❤️", "Beste Zuhörer füreinander", "Umarmungs-Experten", "Bringen uns gegenseitig immer zum Lachen", "Geduld auf Weltklasse-Niveau miteinander"]
 };
 const cvAchievements = {
   en: ["Met each other's parents", "Completely conquered each other's hearts", "Made each other the happiest people alive", "Made the best decision of our lives (choosing each other)"],
