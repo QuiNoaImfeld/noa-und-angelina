@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
 
@@ -41,9 +41,10 @@
     <div class="floating-hearts" id="heroHearts"></div>
     <div class="hero-overlay"></div>
 
-    <!-- Monster aus CSS-Formen gebaut: weiss, haarig, mit beweglichen Augen/Armen/Beinen -->
+    <!-- Monster aus CSS-Formen gebaut: weiss, haarig, niedlich mit Wangen, Laecheln, 2 Armen -->
     <div class="monster" id="runner">
-      <div class="monster-arm"></div>
+      <div class="monster-arm left" id="armLeft"></div>
+      <div class="monster-arm right" id="armRight"></div>
       <div class="monster-body">
         <div class="fur-tuft"></div>
         <div class="fur-tuft"></div>
@@ -52,6 +53,9 @@
         <div class="fur-tuft"></div>
         <div class="monster-eye left"><div class="monster-pupil" id="pupilLeft"></div></div>
         <div class="monster-eye right"><div class="monster-pupil" id="pupilRight"></div></div>
+        <div class="monster-cheek left"></div>
+        <div class="monster-cheek right"></div>
+        <div class="monster-mouth"></div>
       </div>
       <div class="monster-leg left" id="legLeft"></div>
       <div class="monster-leg right" id="legRight"></div>
@@ -189,6 +193,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-<script src="script.js?v=13"></script>
+<script src="script.js?v=14"></script>
 </body>
 </html>
