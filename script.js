@@ -15,8 +15,9 @@ const translations = {
     dayLabel: "days",
     hourLabel: "hours",
     minuteLabel: "minutes",
+    secondLabel: "seconds",
     heroSubPrefix: "together, and counting 💕",
-    heroScroll: "↓ Our story ↓",
+    heroScroll: "Press the heart to continue",
     storyTitle: "Our journey together",
     storySub: "Scroll down to relive every milestone",
     timelineScrollHint: "scroll ↓",
@@ -54,8 +55,9 @@ const translations = {
     dayLabel: "Tage",
     hourLabel: "Stunden",
     minuteLabel: "Minuten",
+    secondLabel: "Sekunden",
     heroSubPrefix: "zusammen, und es geht weiter 💕",
-    heroScroll: "↓ Unsere Geschichte ↓",
+    heroScroll: "Drück das Herz, um weiterzugehen",
     storyTitle: "Unser Weg zusammen",
     storySub: "Scroll runter, um jeden Meilenstein zu erleben",
     timelineScrollHint: "scrollen ↓",
@@ -226,11 +228,11 @@ function createFloatingHearts(containerId) {
     heart.className = "heart";
     heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
     heart.style.left = Math.random() * 100 + "%";
-    heart.style.animationDuration = 6 + Math.random() * 6 + "s";
+    heart.style.animationDuration = 5 + Math.random() * 4 + "s";
     heart.style.fontSize = 14 + Math.random() * 18 + "px";
     container.appendChild(heart);
-    setTimeout(() => heart.remove(), 13000);
-  }, 900);
+    setTimeout(() => heart.remove(), 9500);
+  }, 350);
 }
 
 const mapInstances = {};
@@ -346,9 +348,50 @@ function updateTimeCounter() {
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
   document.getElementById("daysCount").textContent = days;
   document.getElementById("hoursCount").textContent = hours;
   document.getElementById("minutesCount").textContent = minutes;
+  document.getElementById("secondsCount").textContent = seconds;
+}
+
+function initHeroCta() {
+  const heartBtn = document.getElementById("heartBtn");
+  const heartIcon = heartBtn.querySelector(".heart-btn-icon");
+  const runner = document.getElementById("runner");
+  let isAnimating = false;
+
+  heartBtn.addEventListener("click", () => {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    runner.style.opacity = "1";
+    runner.style.transform = "translateY(-50%) translateX(0) scaleX(1)";
+
+    const heartRect = heartBtn.getBoundingClientRect();
+    const runnerRect = runner.getBoundingClientRect();
+    const distance = (heartRect.left + heartRect.width / 2) - (runnerRect.left + runnerRect.width / 2) - 6;
+
+    anime({
+      targets: runner,
+      translateX: distance,
+      duration: 650,
+      easing: "easeInOutQuad",
+      complete: () => {
+        anime({ targets: runner, scale: [1, 0.8, 1], duration: 250, easing: "easeOutQuad" });
+        heartIcon.classList.add("filling");
+        anime({ targets: heartIcon, scale: [1, 1.35, 1], duration: 500, easing: "easeOutElastic(1, .6)" });
+
+        setTimeout(() => {
+          heartIcon.classList.remove("filling");
+          heartIcon.classList.add("filled");
+          runner.style.opacity = "0";
+          document.getElementById("story").scrollIntoView({ behavior: "smooth" });
+          setTimeout(() => { isAnimating = false; }, 800);
+        }, 700);
+      }
+    });
+  });
 }
 
 function renderTimeline() {
@@ -578,10 +621,11 @@ function clearFireworkStage() { document.getElementById("fireworkStage").innerHT
 
 function initMainContent() {
   updateTimeCounter();
-  setInterval(updateTimeCounter, 1000 * 30);
+  setInterval(updateTimeCounter, 1000);
   renderTimeline();
   renderGallery();
   renderCV();
+  initHeroCta();
   anime({ targets: ".hero-content", opacity: [0, 1], translateY: [30, 0], duration: 1000, easing: "easeOutExpo" });
 }
 
