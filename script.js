@@ -14,7 +14,7 @@ const quizQuestions = [
     lat: 47.42018000286268,
     lng: 9.270979952465375,
     startZoom: 12,
-    toleranceKm: 3, // Grosszuegige Toleranz, da sie es am Handy antippt
+    toleranceKm: 0.4, // ~400m Toleranz - handyfreundlich, aber sie muss den Ort wirklich treffen
   },
   {
     type: "text",
