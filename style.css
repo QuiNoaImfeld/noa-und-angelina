@@ -9,6 +9,7 @@
   --gradient: linear-gradient(135deg, #ff6b9d 0%, #c44dff 50%, #6c5b7b 100%);
   --gate-gradient: linear-gradient(160deg, #ffd6e8 0%, #fff0f0 45%, #ffe9d6 100%);
   --hero-gradient: linear-gradient(150deg, #ff9a76 0%, #ff6b9d 55%, #ffcf6b 100%);
+  --monster-color: #8de08a;
 }
 
 *{margin:0; padding:0; box-sizing:border-box;}
@@ -139,16 +140,6 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
 .hero-sub{ font-size: clamp(14px, 2.5vw, 17px); margin-bottom: 36px; font-weight: 300; opacity: 0.9; }
 
 .hero-cta{ position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.runner{
-  position: absolute;
-  left: -80px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 26px;
-  opacity: 0;
-  z-index: 3;
-  transform-origin: center;
-}
 .heart-btn{
   background: transparent; border: none; cursor: pointer; padding: 10px;
   transition: transform 0.15s;
@@ -170,6 +161,76 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
 }
 .heart-btn-icon.filled path{ fill: #ff3d5e; stroke: #ff3d5e; }
 .hero-cta-label{ font-size: 12px; opacity: 0.75; letter-spacing: 0.5px; }
+
+/* ================= MONSTER (aus CSS-Formen gebaut) ================= */
+.monster{
+  position: absolute;
+  left: 50%;
+  top: 74%;
+  width: 46px;
+  height: 44px;
+  z-index: 4;
+  opacity: 0;
+  transform: translate(-260px, -50%);
+  pointer-events: none;
+}
+.monster-body{
+  position: relative;
+  width: 44px;
+  height: 34px;
+  background: var(--monster-color);
+  border: 3px solid var(--dark);
+  border-radius: 50% 50% 44% 44%;
+  overflow: visible;
+}
+.monster-eye{
+  position: absolute;
+  top: 8px;
+  width: 11px;
+  height: 11px;
+  background: white;
+  border: 2px solid var(--dark);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.monster-eye.left{ left: 5px; }
+.monster-eye.right{ left: 22px; }
+.monster-pupil{
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 4px;
+  height: 4px;
+  background: var(--dark);
+  border-radius: 50%;
+  transform: translate(0, 0);
+  transition: transform 0.35s ease;
+}
+.monster-arm{
+  position: absolute;
+  top: 16px;
+  right: -6px;
+  width: 14px;
+  height: 7px;
+  background: var(--monster-color);
+  border: 3px solid var(--dark);
+  border-radius: 8px;
+  transform-origin: left center;
+  transform: rotate(0deg);
+  z-index: 2;
+}
+.monster-leg{
+  position: absolute;
+  bottom: -8px;
+  width: 10px;
+  height: 12px;
+  background: var(--monster-color);
+  border: 3px solid var(--dark);
+  border-radius: 0 0 8px 8px;
+  transform-origin: top center;
+}
+.monster-leg.left{ left: 6px; transform: rotate(0deg); }
+.monster-leg.right{ left: 24px; transform: rotate(0deg); }
 
 .section-title{ text-align: center; font-size: clamp(28px, 5vw, 42px); color: var(--pink-dark); margin-bottom: 8px; }
 .section-title.light{ color: white; }
