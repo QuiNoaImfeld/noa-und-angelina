@@ -7,20 +7,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
 <button id="langToggle" class="lang-toggle" aria-label="Switch language">🌐 DE</button>
+
+<div class="journey-track hidden" id="journeyTrack">
+  <div class="journey-track-fill" id="journeyTrackFill"></div>
+  <div class="journey-track-dot" id="journeyTrackDot"></div>
+</div>
 
 <section id="gate" class="gate">
   <div class="floating-hearts" id="gateHearts"></div>
   <div class="gate-card">
     <h1 class="gate-title" data-i18n="gateTitle">💌 Hey Angi, before you can go any further...</h1>
     <p class="gate-sub" data-i18n="gateSub">Answer all questions correctly to unlock our story.</p>
-
     <div id="quizContainer"></div>
-
     <button id="checkBtn" class="btn-main" data-i18n="gateButton">Unlock 🔓</button>
     <p id="gateError" class="gate-error"></p>
   </div>
@@ -33,8 +36,13 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-kicker" data-i18n="heroKicker">For you, my heart</p>
-      <h1 class="hero-title">NOA <span class="amp">&</span> ANGELINA</h1>
-      <p class="hero-sub"><span data-i18n="heroSubPrefix">We've been together for</span> <span id="daysCount">0</span> <span data-i18n="heroSubSuffix">days</span> 💕</p>
+      <h1 class="hero-title">NOA <span class="amp">×</span> ANGELINA</h1>
+      <div class="hero-timer">
+        <div class="hero-timer-unit"><span id="daysCount">0</span><small data-i18n="dayLabel">days</small></div>
+        <div class="hero-timer-unit"><span id="hoursCount">0</span><small data-i18n="hourLabel">hours</small></div>
+        <div class="hero-timer-unit"><span id="minutesCount">0</span><small data-i18n="minuteLabel">minutes</small></div>
+      </div>
+      <p class="hero-sub" data-i18n="heroSubPrefix">together, and counting 💕</p>
       <a href="#story" class="scroll-down" data-i18n="heroScroll">↓ Our story ↓</a>
     </div>
   </section>
@@ -44,21 +52,41 @@
       <h2 class="section-title" data-i18n="storyTitle">Our journey together</h2>
       <p class="section-sub" data-i18n="storySub">Scroll down to relive every milestone</p>
     </div>
-
-    <div class="timeline-scroll" id="timelineScroll">
-      <div class="timeline-progress"><div class="timeline-progress-fill" id="timelineFill"></div></div>
-    </div>
+    <div class="timeline-scroll" id="timelineScroll"></div>
   </section>
 
   <section id="gallery" class="gallery-section">
     <h2 class="section-title" data-i18n="galleryTitle">Our favorite moments</h2>
-    <p class="section-sub" data-i18n="gallerySub">A picture says more than a thousand words</p>
-    <div class="gallery-grid" id="galleryGrid"></div>
+    <p class="section-sub" data-i18n="gallerySub">Swipe to see more</p>
+    <div class="gallery-carousel" id="galleryCarousel">
+      <div class="gallery-track" id="galleryTrack"></div>
+      <button class="carousel-arrow left" id="carouselPrev" aria-label="Previous">‹</button>
+      <button class="carousel-arrow right" id="carouselNext" aria-label="Next">›</button>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </section>
+
+  <section id="song" class="song-section">
+    <h2 class="section-title light" data-i18n="ourSongTitle">Our Song</h2>
+    <p class="section-sub" data-i18n="ourSongSub">The soundtrack of us</p>
+    <div class="song-card">
+      <div class="vinyl-wrap">
+        <div class="vinyl"></div>
+        <div class="vinyl-note">🎵</div>
+      </div>
+      <div class="song-info">
+        <h3>Stolen Dance</h3>
+        <p>Milky Chance</p>
+        <div class="spotify-embed">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6vECYJHxYmm3Ydt3fF01pE?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="cv" class="cv-section">
     <h2 class="section-title" data-i18n="cvTitle">Our Relationship CV</h2>
-    <p class="section-sub" data-i18n="cvSub">Application for the position: Best Girlfriend for Life ❤️</p>
+    <p class="section-sub" data-i18n="cvSub">Joint application for the position: Best Couple Ever ❤️</p>
 
     <div class="cv-card">
       <div class="cv-header">
@@ -71,6 +99,7 @@
 
       <div class="cv-block">
         <h4 data-i18n="cvEducation">🎓 Education</h4>
+        <p><span data-i18n="cvFriendsYears">Years of being just friends first</span></p>
         <p><span data-i18n="cvMeeting">Meeting each other</span> — <em id="cvMeetingDetail"></em></p>
         <p><span data-i18n="cvFirstDate">First date</span> — <em id="cvFirstDateDetail"></em></p>
       </div>
@@ -107,13 +136,9 @@
   <section id="fireworklab" class="firework-section">
     <h2 class="section-title" data-i18n="fwTitle">Firework Lab</h2>
     <p class="section-sub" data-i18n="fwSub">Pick your favorite symbols, add a message, and light up the sky</p>
-
     <div class="firework-picker" id="fireworkPicker"></div>
-
     <input type="text" id="fireworkMessage" class="firework-message-input" maxlength="24" data-i18n-placeholder="fwMessagePlaceholder" placeholder="Type a message (optional)...">
-
     <div class="firework-stage" id="fireworkStage"></div>
-
     <div class="firework-controls">
       <button id="launchBtn" class="btn-main" data-i18n="fwLaunch">Launch 🚀</button>
       <button id="clearBtn" class="btn-secondary" data-i18n="fwClear">Clear</button>
@@ -128,6 +153,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-<script src="script.js?v=5"></script>
+<script src="script.js?v=6"></script>
 </body>
 </html>
