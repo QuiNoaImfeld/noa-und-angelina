@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noa & Angelina – Unsere Geschichte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<section id="gate" class="gate">
+  <div class="gate-card">
+    <h1 class="gate-title">💌 Hey Angi, bevor du weiter darfst...</h1>
+    <p class="gate-sub">Beantworte alle Fragen richtig, um unsere Geschichte zu öffnen.</p>
+
+    <div id="quizContainer"></div>
+
+    <button id="checkBtn" class="btn-main">Aufschliessen 🔓</button>
+    <p id="gateError" class="gate-error"></p>
+  </div>
+</section>
+
+<main id="mainContent" class="main-content hidden">
+
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">Für dich, mein Herz</p>
+      <h1 class="hero-title">NOA <span class="amp">&</span> ANGELINA</h1>
+      <p class="hero-sub">Wir sind schon seit <span id="daysCount">0</span> Tagen zusammen 💕</p>
+      <a href="#story" class="scroll-down">↓ Unsere Geschichte ↓</a>
+    </div>
+  </section>
+
+  <section id="story" class="timeline-section">
+    <h2 class="section-title">Unser Weg zusammen</h2>
+    <p class="section-sub">Jeder Moment, der uns hierher gebracht hat</p>
+
+    <div class="timeline" id="timelineWrap">
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery-section">
+    <h2 class="section-title">Unsere schönsten Momente</h2>
+    <p class="section-sub">Ein Bild sagt mehr als tausend Worte</p>
+    <div class="gallery-grid" id="galleryGrid">
+    </div>
+  </section>
+
+  <section id="cv" class="cv-section">
+    <h2 class="section-title">Unser Beziehungslebenslauf</h2>
+    <p class="section-sub">Bewerbung um die Position: Beste Freundin fürs Leben ❤️</p>
+
+    <div class="cv-card">
+      <div class="cv-header">
+        <div class="cv-photo-placeholder">📷</div>
+        <div>
+          <h3>Noa &amp; Angelina (Angi / Angel)</h3>
+          <p class="cv-role">Aktuelle Position: Verliebt, seit dem <span id="cvStartDate">20.12.2025</span></p>
+        </div>
+      </div>
+
+      <div class="cv-block">
+        <h4>🎓 Ausbildung</h4>
+        <p>Kennenlernen — <em>Ort/Umstände hier einfügen</em></p>
+        <p>Erstes Date — <em>Ort/Umstände hier einfügen</em></p>
+      </div>
+
+      <div class="cv-block">
+        <h4>💼 Berufserfahrung</h4>
+        <ul id="cvExperience">
+        </ul>
+      </div>
+
+      <div class="cv-block">
+        <h4>⭐ Fähigkeiten & Stärken</h4>
+        <div class="skills" id="cvSkills">
+        </div>
+      </div>
+
+      <div class="cv-block">
+        <h4>🏆 Erfolge</h4>
+        <ul id="cvAchievements">
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="letter" class="letter-section">
+    <div class="letter-card">
+      <h2 class="section-title light">Zum Schluss, Angel...</h2>
+      <p class="letter-text" id="loveLetterText">
+        Hier kommt dein persönlicher Liebesbrief hin.
+      </p>
+      <button id="confettiBtn" class="btn-main">Feuerwerk! 🎉</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Gemacht mit ❤️ von Noa für Angelina · Seit dem 20.12.2025</p>
+  </footer>
+
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
