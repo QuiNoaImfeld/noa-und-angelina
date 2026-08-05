@@ -9,7 +9,7 @@
   --gradient: linear-gradient(135deg, #ff6b9d 0%, #c44dff 50%, #6c5b7b 100%);
   --gate-gradient: linear-gradient(160deg, #ffd6e8 0%, #fff0f0 45%, #ffe9d6 100%);
   --hero-gradient: linear-gradient(150deg, #ff9a76 0%, #ff6b9d 55%, #ffcf6b 100%);
-  --monster-color: #fdfdfd;
+  --monster-color: #fffdfa;
 }
 
 *{margin:0; padding:0; box-sizing:border-box;}
@@ -162,94 +162,116 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
 .heart-btn-icon.filled path{ fill: #ff3d5e; stroke: #ff3d5e; }
 .hero-cta-label{ font-size: 12px; opacity: 0.75; letter-spacing: 0.5px; }
 
-/* ================= MONSTER - weiss, haarig, aus CSS-Formen ================= */
+/* ================= MONSTER - weiss, haarig, niedlich mit Wangen/Laecheln/2 Armen ================= */
 .monster{
   position: absolute;
   left: 50%;
   top: 74%;
-  width: 58px;
-  height: 52px;
-  margin-left: -288px;
-  margin-top: -26px;
+  width: 60px;
+  height: 56px;
+  margin-left: -292px;
+  margin-top: -28px;
   z-index: 4;
   opacity: 0;
   pointer-events: none;
 }
 .monster-body{
   position: relative;
-  width: 56px;
-  height: 40px;
-  margin-top: 10px;
+  width: 58px;
+  height: 44px;
+  margin: 12px auto 0;
   background: var(--monster-color);
   border: 3px solid #333;
-  border-radius: 50% 50% 42% 42%;
-  box-shadow: inset 0 -6px 8px rgba(0,0,0,0.06);
+  border-radius: 55% 55% 45% 45%;
+  box-shadow: inset 0 -6px 8px rgba(255,182,193,0.15);
 }
 .fur-tuft{
   position: absolute;
-  top: -9px;
+  top: -10px;
   width: 0;
   height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 12px solid var(--monster-color);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 13px solid var(--monster-color);
   filter: drop-shadow(0 -1px 0 #333);
 }
-.fur-tuft:nth-child(1){ left: -2px; transform: rotate(-18deg); }
-.fur-tuft:nth-child(2){ left: 9px; transform: rotate(-8deg); top: -11px; }
-.fur-tuft:nth-child(3){ left: 21px; top: -12px; }
-.fur-tuft:nth-child(4){ left: 33px; transform: rotate(8deg); top: -11px; }
-.fur-tuft:nth-child(5){ left: 44px; transform: rotate(18deg); }
+.fur-tuft:nth-child(1){ left: -3px; transform: rotate(-20deg); }
+.fur-tuft:nth-child(2){ left: 9px; transform: rotate(-9deg); top: -12px; }
+.fur-tuft:nth-child(3){ left: 22px; top: -13px; }
+.fur-tuft:nth-child(4){ left: 35px; transform: rotate(9deg); top: -12px; }
+.fur-tuft:nth-child(5){ left: 47px; transform: rotate(20deg); }
 .monster-eye{
   position: absolute;
-  top: 10px;
-  width: 13px;
-  height: 13px;
+  top: 11px;
+  width: 16px;
+  height: 16px;
   background: white;
   border: 2px solid #333;
   border-radius: 50%;
   overflow: hidden;
   z-index: 2;
 }
-.monster-eye.left{ left: 8px; }
-.monster-eye.right{ left: 30px; }
+.monster-eye.left{ left: 9px; }
+.monster-eye.right{ left: 33px; }
 .monster-pupil{
   position: absolute;
-  top: 2.5px;
-  left: 2.5px;
-  width: 5px;
-  height: 5px;
+  top: 4px;
+  left: 4px;
+  width: 7px;
+  height: 7px;
   background: #222;
   border-radius: 50%;
   transform: translate(0, 0);
   transition: transform 0.3s ease;
 }
+.monster-cheek{
+  position: absolute;
+  top: 25px;
+  width: 7px;
+  height: 5px;
+  background: #ffb3c6;
+  border-radius: 50%;
+  opacity: 0.85;
+  z-index: 1;
+}
+.monster-cheek.left{ left: 5px; }
+.monster-cheek.right{ left: 44px; }
+.monster-mouth{
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 7px;
+  border-bottom: 2.5px solid #333;
+  border-radius: 0 0 60% 60%;
+}
 .monster-arm{
   position: absolute;
-  top: 20px;
-  right: -8px;
+  top: 22px;
   width: 18px;
   height: 8px;
   background: var(--monster-color);
   border: 3px solid #333;
   border-radius: 8px;
-  transform-origin: left center;
   transform: rotate(0deg);
   z-index: 3;
 }
+.monster-arm.right{ right: -8px; transform-origin: left center; }
+.monster-arm.left{ left: -8px; transform-origin: right center; }
 .monster-leg{
   position: absolute;
   bottom: -6px;
-  width: 12px;
-  height: 14px;
+  width: 13px;
+  height: 15px;
   background: var(--monster-color);
   border: 3px solid #333;
   border-radius: 0 0 8px 8px;
   transform-origin: top center;
   z-index: 1;
 }
-.monster-leg.left{ left: 10px; }
-.monster-leg.right{ left: 34px; }
+.monster-leg.left{ left: 12px; }
+.monster-leg.right{ left: 36px; }
 
 .section-title{ text-align: center; font-size: clamp(28px, 5vw, 42px); color: var(--pink-dark); margin-bottom: 8px; }
 .section-title.light{ color: white; }
