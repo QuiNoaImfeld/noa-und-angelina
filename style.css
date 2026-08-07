@@ -34,23 +34,6 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
 @keyframes blobFloat2{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(-70px,-50px) scale(1.2); } }
 @keyframes blobFloat3{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(40px,-60px) scale(0.9); } }
 
-.journey-track{
-  position: fixed; left: 14px; top: 50%; transform: translateY(-50%);
-  width: 6px; height: 56vh; background: rgba(160,108,213,0.18); border-radius: 6px; z-index: 40;
-  opacity: 0; transition: opacity 0.4s ease;
-}
-.journey-track.visible{ opacity: 1; }
-.journey-track-fill{
-  width: 100%; height: 0%; background: linear-gradient(180deg, var(--purple-bright), var(--pink-dark));
-  border-radius: 6px; box-shadow: 0 0 14px rgba(160,108,213,0.7); transition: height 0.08s linear;
-}
-.journey-track-dot{
-  position: absolute; left: 50%; top: 0%; width: 16px; height: 16px; transform: translate(-50%, -50%);
-  border-radius: 50%; background: var(--purple-bright); box-shadow: 0 0 0 0 rgba(160,108,213,0.6);
-  animation: trackPulse 1.6s ease-in-out infinite; transition: top 0.08s linear;
-}
-@keyframes trackPulse{ 0%{ box-shadow: 0 0 0 0 rgba(160,108,213,0.6); } 70%{ box-shadow: 0 0 0 10px rgba(160,108,213,0); } 100%{ box-shadow: 0 0 0 0 rgba(160,108,213,0); } }
-
 .floating-hearts{ position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
 .heart{ position: absolute; top: -50px; font-size: 20px; opacity: 0.8; animation: heartFall linear infinite; }
 @keyframes heartFall{
@@ -276,24 +259,47 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
 .section-title.light{ color: white; }
 .section-sub{ text-align: center; color: #888; font-size: 15px; margin-bottom: 20px; }
 
-.timeline-section{ padding: 60px 0 0; position: relative; z-index: 2; }
-.timeline-header{ padding: 0 20px; margin-bottom: 20px; }
-.timeline-header .section-sub{ margin-bottom: 0; }
-.timeline-scroll{
-  position: relative; height: 100vh; overflow-y: scroll;
-  scroll-snap-type: y mandatory; scroll-behavior: smooth;
-  background: linear-gradient(180deg, #fff0f6, #f3e8ff);
+/* ================= OUR JOURNEY - Rotierende Achse mit Orbit-Karten ================= */
+.timeline-section{ padding: 100px 20px 40px; position: relative; z-index: 2; overflow: hidden; }
+.timeline-header{ margin-bottom: 20px; }
+
+.orbit-wrap{ position: relative; max-width: 900px; margin: 0 auto; }
+.orbit-axis-track{
+  position: sticky; top: 0; left: 50%; transform: translateX(-50%);
+  width: 8px; height: 100vh; z-index: 1; margin-bottom: -100vh; pointer-events: none;
 }
-.timeline-slide{ height: 100vh; scroll-snap-align: start; scroll-snap-stop: always; display: flex; align-items: center; justify-content: center; padding: 40px 24px 40px 50px; position: relative; }
-.timeline-slide-inner{ max-width: 560px; text-align: center; opacity: 0; transform: translateY(40px) scale(0.96); }
-.timeline-slide-number{ font-family: 'Playfair Display', serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; color: var(--pink-dark); opacity: 0.7; margin-bottom: 10px; }
-.timeline-slide-date{ font-size: 14px; font-weight: 600; color: var(--purple); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-.timeline-slide h3{ font-size: clamp(24px, 5vw, 34px); color: var(--dark); margin-bottom: 14px; }
-.timeline-slide p{ color: #555; font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
-.timeline-slide img{ max-width: 100%; max-height: 260px; border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.18); object-fit: cover; }
-.timeline-slide-dot{ width: 14px; height: 14px; background: var(--pink-dark); border: 3px solid var(--gold); border-radius: 50%; margin: 0 auto 18px; animation: trackPulse 1.6s ease-in-out infinite; }
-.timeline-scroll-hint{ position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--purple); opacity: 0.6; animation: bounceHint 1.8s ease-in-out infinite; }
-@keyframes bounceHint{ 0%,100%{ transform: translate(-50%, 0); } 50%{ transform: translate(-50%, 6px); } }
+.orbit-axis{
+  position: relative; width: 100%; height: 70%; margin: 15% auto;
+  background: linear-gradient(180deg, var(--purple-bright), var(--pink-dark), var(--gold));
+  border-radius: 8px; opacity: 0.55;
+}
+.vertebra{
+  position: absolute; left: 50%; width: 22px; height: 22px; margin-left: -11px;
+  background: white; border: 3px solid var(--pink-dark);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  animation: vertebraSpin 5s linear infinite;
+}
+.vertebra:nth-child(1){ top: 2%; animation-duration: 4s; }
+.vertebra:nth-child(2){ top: 20%; animation-duration: 5.5s; animation-direction: reverse; }
+.vertebra:nth-child(3){ top: 38%; animation-duration: 4.5s; }
+.vertebra:nth-child(4){ top: 56%; animation-duration: 6s; animation-direction: reverse; }
+.vertebra:nth-child(5){ top: 74%; animation-duration: 4.2s; }
+.vertebra:nth-child(6){ top: 92%; animation-duration: 5s; animation-direction: reverse; }
+@keyframes vertebraSpin{ from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
+
+.orbit-cards{
+  position: relative; z-index: 2; display: flex; flex-direction: column;
+  gap: 42vh; padding: 20vh 20px 46vh;
+}
+.orbit-card{
+  max-width: 480px; margin: 0 auto; background: white; border-radius: 22px; padding: 32px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.12); will-change: transform, opacity; opacity: 0;
+  text-align: center;
+}
+.orbit-card-date{ font-size: 13px; font-weight: 600; color: var(--pink-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.orbit-card h3{ font-size: 22px; color: var(--dark); margin-bottom: 10px; }
+.orbit-card p{ color: #555; font-size: 15px; line-height: 1.6; }
+.orbit-card img{ margin-top: 14px; width: 100%; max-height: 220px; object-fit: cover; border-radius: 14px; }
 
 .gallery-section{ padding: 100px 20px 60px; background: #fff0f6; position: relative; z-index: 2; }
 .gallery-carousel{ position: relative; max-width: 520px; margin: 0 auto; overflow: hidden; border-radius: 20px; box-shadow: 0 20px 45px rgba(0,0,0,0.15); touch-action: pan-y; }
@@ -335,78 +341,17 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
 .song-info h3{ font-size: 24px; color: white; margin-bottom: 4px; }
 .song-info p{ color: rgba(255,255,255,0.6); margin-bottom: 14px; }
 
-/* ================= CV SECTION - Rotierende Achse mit Orbit-Karten ================= */
-.cv-section{ padding: 100px 20px 40px; position: relative; z-index: 2; overflow: hidden; }
-.cv-intro{
-  display: flex; align-items: center; gap: 20px; justify-content: center;
-  max-width: 500px; margin: 0 auto 40px; background: white; border-radius: 20px;
-  padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-}
-.cv-photo-placeholder{ width: 70px; height: 70px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0; }
-.cv-intro h3{ font-size: 20px; color: var(--dark); }
-.cv-role{ color: var(--pink-dark); font-size: 13px; font-weight: 500; }
-
-.cv-orbit-wrap{ position: relative; max-width: 900px; margin: 0 auto; }
-.cv-axis-track{
-  position: sticky;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 100vh;
-  z-index: 1;
-  margin-bottom: -100vh;
-  pointer-events: none;
-}
-.cv-axis{
-  position: relative;
-  width: 100%;
-  height: 70%;
-  margin: 15% auto;
-  background: linear-gradient(180deg, var(--purple-bright), var(--pink-dark), var(--gold));
-  border-radius: 8px;
-  opacity: 0.55;
-}
-.vertebra{
-  position: absolute;
-  left: 50%;
-  width: 22px;
-  height: 22px;
-  margin-left: -11px;
-  background: white;
-  border: 3px solid var(--pink-dark);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  animation: vertebraSpin 5s linear infinite;
-}
-.vertebra:nth-child(1){ top: 2%; animation-duration: 4s; }
-.vertebra:nth-child(2){ top: 20%; animation-duration: 5.5s; animation-direction: reverse; }
-.vertebra:nth-child(3){ top: 38%; animation-duration: 4.5s; }
-.vertebra:nth-child(4){ top: 56%; animation-duration: 6s; animation-direction: reverse; }
-.vertebra:nth-child(5){ top: 74%; animation-duration: 4.2s; }
-.vertebra:nth-child(6){ top: 92%; animation-duration: 5s; animation-direction: reverse; }
-@keyframes vertebraSpin{ from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
-
-.cv-orbit-cards{
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 42vh;
-  padding: 20vh 20px 46vh;
-}
-.cv-orbit-card{
-  max-width: 480px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 22px;
-  padding: 32px;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.12);
-  will-change: transform, opacity;
-  opacity: 0;
-}
-.cv-orbit-card h4{ font-size: 17px; color: var(--purple); margin-bottom: 12px; }
-.cv-orbit-card ul{ padding-left: 20px; color: #555; font-size: 14px; line-height: 1.8; }
-.cv-orbit-card p{ color: #555; font-size: 14px; margin-bottom: 6px; }
+/* ================= CV SECTION - klassisches Design ================= */
+.cv-section{ padding: 100px 20px; max-width: 750px; margin: 0 auto; position: relative; z-index: 2; }
+.cv-card{ background: white; border-radius: 24px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+.cv-header{ display: flex; align-items: center; gap: 20px; border-bottom: 2px solid #ffe0ec; padding-bottom: 20px; margin-bottom: 24px; }
+.cv-photo-placeholder{ width: 80px; height: 80px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+.cv-header h3{ font-size: 22px; color: var(--dark); }
+.cv-role{ color: var(--pink-dark); font-size: 14px; font-weight: 500; }
+.cv-block{ margin-bottom: 26px; }
+.cv-block h4{ font-size: 16px; color: var(--purple); margin-bottom: 10px; }
+.cv-block ul{ padding-left: 20px; color: #555; font-size: 14px; line-height: 1.8; }
+.cv-block p{ color: #555; font-size: 14px; margin-bottom: 4px; }
 .skills{ display: flex; flex-wrap: wrap; gap: 8px; }
 .skill-tag{ background: #ffe0ec; color: var(--pink-dark); padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 500; }
 
@@ -454,11 +399,8 @@ h1, h2, h3{ font-family: 'Playfair Display', serif; }
   .firework-stage{ height: 320px; }
   .letter-paper{ padding: 40px 24px 30px; }
   .letter-text{ font-size: 20px; padding-left: 10px; }
-  .journey-track{ left: 6px; width: 4px; height: 46vh; }
-  .journey-track-dot{ width: 12px; height: 12px; }
   .song-card{ flex-direction: column; text-align: center; }
   .hero-timer{ gap: 8px; }
   .hero-timer-unit{ padding: 8px 10px; min-width: 60px; }
-  .cv-intro{ flex-direction: column; text-align: center; }
-  .cv-orbit-card{ padding: 24px; }
+  .orbit-card{ padding: 24px; }
 }
