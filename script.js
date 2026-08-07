@@ -20,7 +20,6 @@ const translations = {
     heroScroll: "Press the heart to continue",
     storyTitle: "Our journey together",
     storySub: "Scroll down to relive every milestone",
-    timelineScrollHint: "scroll ↓",
     galleryTitle: "Our favorite moments",
     gallerySub: "Swipe to see more",
     ourSongTitle: "Our Song",
@@ -60,7 +59,6 @@ const translations = {
     heroScroll: "Drück das Herz, um weiterzugehen",
     storyTitle: "Unser Weg zusammen",
     storySub: "Scroll runter, um jeden Meilenstein zu erleben",
-    timelineScrollHint: "scrollen ↓",
     galleryTitle: "Unsere schönsten Momente",
     gallerySub: "Wische für mehr",
     ourSongTitle: "Unser Song",
@@ -472,63 +470,63 @@ function initHeroCta() {
   });
 }
 
+/* -------- OUR JOURNEY: Karten wandern von unten-links durch die Mitte
+   (an der rotierenden Achse vorbei) nach oben-rechts -------- */
 function renderTimeline() {
-  const scrollWrap = document.getElementById("timelineScroll");
-  scrollWrap.innerHTML = "";
-
-  timelineEvents.forEach((ev, idx) => {
-    const slide = document.createElement("div");
-    slide.className = "timeline-slide";
-    slide.innerHTML = `
-      <div class="timeline-slide-inner">
-        <div class="timeline-slide-dot"></div>
-        <div class="timeline-slide-number">${idx + 1} / ${timelineEvents.length}</div>
-        <div class="timeline-slide-date">${getLocalized(ev.date)}</div>
-        <h3>${getLocalized(ev.title)}</h3>
-        <p>${getLocalized(ev.text)}</p>
-        ${ev.image ? `<img src="${ev.image}" alt="${getLocalized(ev.title)}">` : ""}
-        ${idx === 0 ? `<div class="timeline-scroll-hint">${t("timelineScrollHint")}</div>` : ""}
-      </div>
+  const wrap = document.getElementById("storyOrbitCards");
+  wrap.innerHTML = "";
+  timelineEvents.forEach((ev) => {
+    const card = document.createElement("div");
+    card.className = "orbit-card";
+    card.innerHTML = `
+      <div class="orbit-card-date">${getLocalized(ev.date)}</div>
+      <h3>${getLocalized(ev.title)}</h3>
+      <p>${getLocalized(ev.text)}</p>
+      ${ev.image ? `<img src="${ev.image}" alt="${getLocalized(ev.title)}">` : ""}
     `;
-    scrollWrap.appendChild(slide);
+    wrap.appendChild(card);
   });
+  initOrbitCards("#storyOrbitCards .orbit-card");
+}
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const inner = entry.target.querySelector(".timeline-slide-inner");
-        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-          anime({ targets: inner, opacity: [0, 1], translateY: [40, 0], scale: [0.96, 1], duration: 700, easing: "easeOutExpo" });
-        }
-      });
-    },
-    { root: scrollWrap, threshold: 0.6 }
-  );
-  scrollWrap.querySelectorAll(".timeline-slide").forEach((el) => observer.observe(el));
+let orbitBoundSelectors = {};
+function initOrbitCards(selector) {
+  const cards = document.querySelectorAll(selector);
+  if (!cards.length) return;
 
-  const track = document.getElementById("journeyTrack");
-  const trackFill = document.getElementById("journeyTrackFill");
-  const trackDot = document.getElementById("journeyTrackDot");
+  function update() {
+    const viewportCenter = window.innerHeight / 2;
+    const range = window.innerHeight * 0.85;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.top + rect.height / 2;
+      let progress = (cardCenter - viewportCenter) / range;
+      progress = Math.max(-1, Math.min(1, progress));
 
-  function updateTrack() {
-    const maxScroll = scrollWrap.scrollHeight - scrollWrap.clientHeight;
-    const pct = maxScroll > 0 ? Math.min(100, (scrollWrap.scrollTop / maxScroll) * 100) : 0;
-    trackFill.style.height = pct + "%";
-    trackDot.style.top = pct + "%";
+      const x = -progress * 170;
+      const y = progress * 170;
+      const opacity = Math.max(0, 1 - Math.pow(Math.abs(progress), 1.25));
+      const scale = 0.72 + 0.28 * (1 - Math.abs(progress));
+      const rotate = progress * 14;
+
+      card.style.transform = `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`;
+      card.style.opacity = opacity;
+      card.style.zIndex = Math.round((1 - Math.abs(progress)) * 10);
+    });
   }
-  scrollWrap.addEventListener("scroll", updateTrack);
-  updateTrack();
 
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) track.classList.add("visible");
-        else track.classList.remove("visible");
-      });
-    },
-    { threshold: 0.15 }
-  );
-  sectionObserver.observe(document.getElementById("story"));
+  update();
+  if (!orbitBoundSelectors[selector]) {
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => { update(); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    orbitBoundSelectors[selector] = true;
+  }
 }
 
 function renderGallery() {
@@ -590,49 +588,6 @@ function renderCV() {
   document.getElementById("cvSkills").innerHTML = getLocalized(cvSkills).map((s) => `<span class="skill-tag">${s}</span>`).join("");
   document.getElementById("cvAchievements").innerHTML = getLocalized(cvAchievements).map((a) => `<li>${a}</li>`).join("");
   document.getElementById("loveLetterText").textContent = getLocalized(loveLetterText);
-  initCvOrbit();
-}
-
-/* -------- CV ORBIT: Karten wandern beim Scrollen von unten-links durch die
-   Mitte (an der rotierenden Achse vorbei) nach oben-rechts -------- */
-let cvOrbitBound = false;
-function initCvOrbit() {
-  const cards = document.querySelectorAll(".cv-orbit-card");
-  if (!cards.length) return;
-
-  function update() {
-    const viewportCenter = window.innerHeight / 2;
-    const range = window.innerHeight * 0.85;
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const cardCenter = rect.top + rect.height / 2;
-      let progress = (cardCenter - viewportCenter) / range;
-      progress = Math.max(-1, Math.min(1, progress));
-
-      const x = -progress * 170;
-      const y = progress * 170;
-      const opacity = Math.max(0, 1 - Math.pow(Math.abs(progress), 1.25));
-      const scale = 0.72 + 0.28 * (1 - Math.abs(progress));
-      const rotate = progress * 14;
-
-      card.style.transform = `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`;
-      card.style.opacity = opacity;
-      card.style.zIndex = Math.round((1 - Math.abs(progress)) * 10);
-    });
-  }
-
-  update();
-  if (!cvOrbitBound) {
-    let ticking = false;
-    window.addEventListener("scroll", () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => { update(); ticking = false; });
-        ticking = true;
-      }
-    }, { passive: true });
-    window.addEventListener("resize", update);
-    cvOrbitBound = true;
-  }
 }
 
 function renderFireworkPicker() {
