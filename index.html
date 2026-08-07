@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Story</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="style.css?v=16">
+<link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
 
@@ -22,6 +22,7 @@
 <section id="gate" class="gate">
   <div class="floating-hearts" id="gateHearts"></div>
   <div class="gate-card">
+    <div class="gate-ornament" aria-hidden="true"><span></span><span class="gate-ornament-heart">❤</span><span></span></div>
     <h1 class="gate-title" data-i18n="gateTitle">Before you go any further</h1>
     <p class="gate-sub" data-i18n="gateSub">Answer these to unlock our story</p>
     <div id="quizContainer"></div>
@@ -88,14 +89,16 @@
     </div>
 
     <div class="orbit-wrap">
-      <div class="orbit-axis-track">
-        <div class="orbit-axis">
-          <div class="vertebra"></div>
-          <div class="vertebra"></div>
-          <div class="vertebra"></div>
-          <div class="vertebra"></div>
-          <div class="vertebra"></div>
-          <div class="vertebra"></div>
+      <div class="journey-stage" aria-hidden="true">
+        <div class="journey-dial" id="journeyDial">
+          <div class="dial-ring ticks"></div>
+          <div class="dial-ring arcs"></div>
+          <div class="dial-ring thin"></div>
+          <div class="dial-core"></div>
+          <div class="dial-shape s1">❤</div>
+          <div class="dial-shape s2"></div>
+          <div class="dial-shape s3"></div>
+          <div class="dial-shape s4"></div>
         </div>
       </div>
       <div class="orbit-cards" id="storyOrbitCards"></div>
@@ -110,24 +113,35 @@
       <button class="carousel-arrow left" id="carouselPrev" aria-label="Previous">‹</button>
       <button class="carousel-arrow right" id="carouselNext" aria-label="Next">›</button>
     </div>
+    <div class="gallery-caption-bar">
+      <p class="gallery-caption" id="galleryCaption"></p>
+      <p class="gallery-counter" id="galleryCounter">01 / 04</p>
+    </div>
     <div class="carousel-dots" id="carouselDots"></div>
   </section>
 
   <section id="song" class="song-section">
+    <div class="song-glow" aria-hidden="true"></div>
+    <div class="song-notes" id="songNotes" aria-hidden="true"></div>
     <h2 class="section-title light" data-i18n="ourSongTitle">Our Song</h2>
     <p class="section-sub" data-i18n="ourSongSub">The soundtrack of us</p>
-    <div class="song-card">
+
+    <div class="song-stage">
       <div class="vinyl-wrap">
-        <div class="vinyl"></div>
-        <div class="vinyl-note">🎵</div>
+        <div class="vinyl">
+          <div class="vinyl-label"><span>Stolen<br>Dance</span></div>
+        </div>
+        <div class="tonearm"></div>
       </div>
       <div class="song-info">
-        <h3>Stolen Dance</h3>
-        <p>Milky Chance</p>
-        <div class="spotify-embed">
-          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6vECYJHxYmm3Ydt3fF01pE?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
+        <h3 class="song-title-big">Stolen Dance</h3>
+        <p class="song-artist">Milky Chance</p>
+        <div class="song-wave" id="songWave"></div>
+        <p class="song-lyric">“I want you by my side, so that I never feel alone again”</p>
       </div>
+    </div>
+    <div class="spotify-embed">
+      <iframe title="Spotify" style="border-radius:12px" src="https://open.spotify.com/embed/track/6vECYJHxYmm3Ydt3fF01pE?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </section>
 
@@ -135,36 +149,46 @@
     <h2 class="section-title" data-i18n="cvTitle">Our Relationship CV</h2>
     <p class="section-sub" data-i18n="cvSub">Joint application for the position: Best Couple Ever ❤️</p>
 
-    <div class="cv-card">
-      <div class="cv-header">
-        <div class="cv-photo-placeholder">📷</div>
-        <div>
-          <h3>Noa &amp; Angelina (Angi / Angel)</h3>
-          <p class="cv-role"><span data-i18n="cvRolePrefix">Officially a team since the day we knew</span> <span id="cvStartDate">20.12.2025</span></p>
+    <div class="cv-editorial">
+      <header class="cv-masthead">
+        <h3 class="cv-names">Noa <span class="cv-amp">&amp;</span> Angelina</h3>
+        <p class="cv-alias">Angi · Angel</p>
+        <p class="cv-role"><span data-i18n="cvRolePrefix">Officially a team since the day we knew</span> — <span id="cvStartDate">20.12.2025</span></p>
+      </header>
+
+      <article class="cv-chapter">
+        <span class="cv-chapter-num" aria-hidden="true">01</span>
+        <div class="cv-chapter-content">
+          <h4 data-i18n="cvEducation">Education</h4>
+          <p class="cv-line"><span data-i18n="cvFriendsYears">Years of being just friends first</span></p>
+          <p class="cv-line"><span data-i18n="cvMeeting">Meeting each other</span> — <em id="cvMeetingDetail"></em></p>
+          <p class="cv-line"><span data-i18n="cvFirstDate">First date</span> — <em id="cvFirstDateDetail"></em></p>
         </div>
-      </div>
+      </article>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvEducation">🎓 Education</h4>
-        <p><span data-i18n="cvFriendsYears">Years of being just friends first</span></p>
-        <p><span data-i18n="cvMeeting">Meeting each other</span> — <em id="cvMeetingDetail"></em></p>
-        <p><span data-i18n="cvFirstDate">First date</span> — <em id="cvFirstDateDetail"></em></p>
-      </div>
+      <article class="cv-chapter">
+        <span class="cv-chapter-num" aria-hidden="true">02</span>
+        <div class="cv-chapter-content">
+          <h4 data-i18n="cvExperienceTitle">Experience</h4>
+          <ul class="cv-exp-list" id="cvExperience"></ul>
+        </div>
+      </article>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvExperienceTitle">💼 Experience</h4>
-        <ul id="cvExperience"></ul>
-      </div>
+      <article class="cv-chapter">
+        <span class="cv-chapter-num" aria-hidden="true">03</span>
+        <div class="cv-chapter-content">
+          <h4 data-i18n="cvSkillsTitle">Skills &amp; Strengths</h4>
+          <div class="skills" id="cvSkills"></div>
+        </div>
+      </article>
 
-      <div class="cv-block">
-        <h4 data-i18n="cvSkillsTitle">⭐ Skills & Strengths</h4>
-        <div class="skills" id="cvSkills"></div>
-      </div>
-
-      <div class="cv-block">
-        <h4 data-i18n="cvAchievementsTitle">🏆 Achievements</h4>
-        <ul id="cvAchievements"></ul>
-      </div>
+      <article class="cv-chapter">
+        <span class="cv-chapter-num" aria-hidden="true">04</span>
+        <div class="cv-chapter-content">
+          <h4 data-i18n="cvAchievementsTitle">Achievements</h4>
+          <ul class="cv-achieve-list" id="cvAchievements"></ul>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -172,11 +196,11 @@
     <div class="letter-envelope-bg">
       <h2 class="section-title light" data-i18n="letterTitle">Love Letter</h2>
       <div class="letter-paper">
-        <div class="letter-paper-seal">💌</div>
+        <div class="letter-paper-seal"><span>❤</span></div>
         <p class="letter-text" id="loveLetterText"></p>
         <p class="letter-signature">— Noa ❤️</p>
       </div>
-      <a href="#fireworklab" class="btn-main" data-i18n="letterFireworkBtn">Go to the Firework Lab 🎆</a>
+      <a href="#fireworklab" class="btn-main" data-i18n="letterFireworkBtn">Go to the Firework Lab</a>
     </div>
   </section>
 
@@ -200,6 +224,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-<script src="script.js?v=16"></script>
+<script src="script.js?v=17"></script>
 </body>
 </html>

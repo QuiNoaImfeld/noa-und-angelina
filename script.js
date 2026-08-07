@@ -27,15 +27,15 @@ const translations = {
     cvTitle: "Our Relationship CV",
     cvSub: "Joint application for the position: Best Couple Ever ❤️",
     cvRolePrefix: "Officially a team since the day we knew",
-    cvEducation: "🎓 Education",
+    cvEducation: "Education",
     cvFriendsYears: "Years of being just friends first",
     cvMeeting: "Meeting each other",
     cvFirstDate: "First date",
-    cvExperienceTitle: "💼 Experience",
-    cvSkillsTitle: "⭐ Skills & Strengths",
-    cvAchievementsTitle: "🏆 Achievements",
+    cvExperienceTitle: "Experience",
+    cvSkillsTitle: "Skills & Strengths",
+    cvAchievementsTitle: "Achievements",
     letterTitle: "Love Letter",
-    letterFireworkBtn: "Go to the Firework Lab 🎆",
+    letterFireworkBtn: "Go to the Firework Lab",
     fwTitle: "Firework Lab",
     fwSub: "Pick your favorite symbols, add a message, and light up the sky",
     fwLaunch: "Launch",
@@ -66,15 +66,15 @@ const translations = {
     cvTitle: "Unser Beziehungslebenslauf",
     cvSub: "Gemeinsame Bewerbung um die Position: Bestes Paar überhaupt ❤️",
     cvRolePrefix: "Offiziell ein Team seit dem Tag, an dem wir es wussten",
-    cvEducation: "🎓 Ausbildung",
+    cvEducation: "Ausbildung",
     cvFriendsYears: "Jahrelang erstmal nur Freunde gewesen",
     cvMeeting: "Kennenlernen",
     cvFirstDate: "Erstes Date",
-    cvExperienceTitle: "💼 Berufserfahrung",
-    cvSkillsTitle: "⭐ Fähigkeiten & Stärken",
-    cvAchievementsTitle: "🏆 Erfolge",
+    cvExperienceTitle: "Berufserfahrung",
+    cvSkillsTitle: "Fähigkeiten & Stärken",
+    cvAchievementsTitle: "Erfolge",
     letterTitle: "Liebesbrief",
-    letterFireworkBtn: "Zum Feuerwerk-Labor 🎆",
+    letterFireworkBtn: "Zum Feuerwerk-Labor",
     fwTitle: "Feuerwerk-Labor",
     fwSub: "Wähl deine Lieblingssymbole, schreib eine Nachricht und erleuchte den Himmel",
     fwLaunch: "Zünden",
@@ -145,10 +145,10 @@ const timelineEvents = [
 ];
 
 const galleryPhotos = [
-  { src: "https://via.placeholder.com/600x600/ff6b9d/ffffff?text=Photo+1", caption: { en: "Photo 1 description", de: "Beschreibung Foto 1" } },
-  { src: "https://via.placeholder.com/600x600/c44dff/ffffff?text=Photo+2", caption: { en: "Photo 2 description", de: "Beschreibung Foto 2" } },
-  { src: "https://via.placeholder.com/600x600/6c5b7b/ffffff?text=Photo+3", caption: { en: "Photo 3 description", de: "Beschreibung Foto 3" } },
-  { src: "https://via.placeholder.com/600x600/f6c453/ffffff?text=Photo+4", caption: { en: "Photo 4 description", de: "Beschreibung Foto 4" } }
+  { src: "https://placehold.co/600x600/ffd3e3/a05676?text=Photo+1", caption: { en: "Photo 1 description", de: "Beschreibung Foto 1" } },
+  { src: "https://placehold.co/600x600/e6d3ff/6b4f8f?text=Photo+2", caption: { en: "Photo 2 description", de: "Beschreibung Foto 2" } },
+  { src: "https://placehold.co/600x600/ffe8c9/a07940?text=Photo+3", caption: { en: "Photo 3 description", de: "Beschreibung Foto 3" } },
+  { src: "https://placehold.co/600x600/d3f0e6/3f8368?text=Photo+4", caption: { en: "Photo 4 description", de: "Beschreibung Foto 4" } }
 ];
 
 const cvMeetingDetail = { en: "St. Gallen Party", de: "St. Gallen Party" };
@@ -362,6 +362,8 @@ function updateTimeCounter() {
   document.getElementById("secondsCount").textContent = seconds;
 }
 
+/* -------- MONSTER: auf dem Handy schaut es zuerst seitlich rein (peek),
+   auf dem Desktop erscheint es direkt und läuft los -------- */
 function initHeroCta() {
   const heartBtn = document.getElementById("heartBtn");
   const heartIcon = heartBtn.querySelector(".heart-btn-icon");
@@ -393,6 +395,8 @@ function initHeroCta() {
     if (isAnimating) return;
     isAnimating = true;
 
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     monster.style.opacity = "0";
     monster.style.transform = "translateX(0) translateY(0)";
     lookAt(0, 0);
@@ -402,30 +406,60 @@ function initHeroCta() {
     const arriveOffset = 36;
     const fullDistance = (heartRect.left + heartRect.width / 2) - (monsterRect.left + monsterRect.width / 2) - arriveOffset;
 
-    monster.style.opacity = "1";
-    await animatePromise({ targets: monster, translateX: [0, 26], duration: 550, easing: "easeOutQuad" });
+    if (isMobile) {
+      /* Peek-Sequenz: Monster steht offscreen links, schaut erst nur mit dem
+         Kopf rein, mustert das Herz, schaut zu dir — und springt dann rein. */
+      const monsterLeft = monsterRect.left;
+      const peekX = Math.max(0, -monsterLeft - 18); // so weit, dass ~2/3 sichtbar sind
+      monster.style.opacity = "1";
 
-    lookAt(2, 0.5);
-    await wait(450);
+      await animatePromise({ targets: monster, translateX: [peekX - 40, peekX], rotate: [-14, -10], duration: 800, easing: "easeOutQuad" });
+      lookAt(2.5, 0.5);
+      await wait(550);
+      lookAt(-2, -1);
+      await wait(600);
+      lookAt(0, 0);
+      await wait(250);
 
-    lookAt(-1.5, -1);
-    await wait(500);
-    lookAt(0, 0);
+      await animatePromise({
+        targets: monster,
+        translateX: peekX + 46,
+        translateY: [0, -26, 0],
+        rotate: 0,
+        scale: [0.9, 1.1, 1],
+        duration: 650,
+        easing: "easeOutQuad"
+      });
+    } else {
+      /* Desktop: direkt erscheinen und loslaufen (bewusst so gewollt) */
+      monster.style.opacity = "1";
+      await animatePromise({ targets: monster, translateX: [0, 26], duration: 550, easing: "easeOutQuad" });
 
-    await animatePromise({
-      targets: monster,
-      translateX: fullDistance * 0.32,
-      translateY: [0, -22, 0],
-      scale: [0.85, 1.08, 1],
-      duration: 600,
-      easing: "easeOutQuad"
-    });
+      lookAt(2, 0.5);
+      await wait(450);
+      lookAt(-1.5, -1);
+      await wait(500);
+      lookAt(0, 0);
 
+      await animatePromise({
+        targets: monster,
+        translateX: fullDistance * 0.32,
+        translateY: [0, -22, 0],
+        scale: [0.85, 1.08, 1],
+        duration: 600,
+        easing: "easeOutQuad"
+      });
+    }
+
+    const currentX = isMobile ? 0 : fullDistance * 0.32;
+    const startX = isMobile
+      ? parseFloat((monster.style.transform.match(/translateX\(([-\d.]+)px\)/) || [0, 0])[1]) || 0
+      : fullDistance * 0.32;
+    const walkStart = isMobile ? Math.max(0, -monsterRect.left - 18) + 46 : fullDistance * 0.32;
+    const remaining = fullDistance - walkStart;
     const steps = 4;
-    const startX = fullDistance * 0.32;
-    const remaining = fullDistance - startX;
     for (let i = 0; i < steps; i++) {
-      const stepTarget = startX + (remaining * (i + 1)) / steps;
+      const stepTarget = walkStart + (remaining * (i + 1)) / steps;
       const swingA = i % 2 === 0 ? -28 : 16;
       const swingB = i % 2 === 0 ? 16 : -28;
       animatePromise({ targets: legLeft, rotate: swingA, duration: 260, easing: "easeInOutSine" });
@@ -470,8 +504,8 @@ function initHeroCta() {
   });
 }
 
-/* -------- OUR JOURNEY: Karten wandern von unten-links durch die Mitte
-   (an der rotierenden Achse vorbei) nach oben-rechts -------- */
+/* -------- OUR JOURNEY: Karten wandern in einem Bogen an einem rotierenden
+   Hintergrund-Dial vorbei — Dial-Rotation ist an den Scroll gekoppelt -------- */
 function renderTimeline() {
   const wrap = document.getElementById("storyOrbitCards");
   wrap.innerHTML = "";
@@ -493,21 +527,35 @@ let orbitBoundSelectors = {};
 function initOrbitCards(selector) {
   const cards = document.querySelectorAll(selector);
   if (!cards.length) return;
+  const section = document.getElementById("story");
+  const dial = document.getElementById("journeyDial");
 
   function update() {
     const viewportCenter = window.innerHeight / 2;
     const range = window.innerHeight * 0.85;
+
+    /* Dial dreht mit dem Scroll durch die Sektion */
+    if (dial && section) {
+      const rect = section.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+      const progress = scrolled / Math.max(total, 1);
+      dial.style.transform = `rotate(${progress * 200}deg)`;
+    }
+
     cards.forEach((card) => {
       const rect = card.getBoundingClientRect();
       const cardCenter = rect.top + rect.height / 2;
       let progress = (cardCenter - viewportCenter) / range;
       progress = Math.max(-1, Math.min(1, progress));
 
-      const x = -progress * 170;
-      const y = progress * 170;
+      /* Bogenbahn: Karten scheinen um das Dial-Zentrum zu kreisen */
+      const theta = progress * 0.85;
+      const x = -Math.sin(theta) * 230;
+      const y = progress * 190;
       const opacity = Math.max(0, 1 - Math.pow(Math.abs(progress), 1.25));
       const scale = 0.72 + 0.28 * (1 - Math.abs(progress));
-      const rotate = progress * 14;
+      const rotate = progress * 16;
 
       card.style.transform = `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`;
       card.style.opacity = opacity;
@@ -529,16 +577,20 @@ function initOrbitCards(selector) {
   }
 }
 
+/* -------- GALLERY: 3D-Polaroid-Coverflow -------- */
 function renderGallery() {
   const trackEl = document.getElementById("galleryTrack");
   const dotsEl = document.getElementById("carouselDots");
   trackEl.innerHTML = "";
   dotsEl.innerHTML = "";
 
-  galleryPhotos.forEach((p) => {
+  galleryPhotos.forEach((p, i) => {
     const slide = document.createElement("div");
     slide.className = "gallery-slide";
-    slide.innerHTML = `<img src="${p.src}" alt="${getLocalized(p.caption)}" draggable="false"><div class="gallery-slide-caption">${getLocalized(p.caption)}</div>`;
+    slide.innerHTML = `<img src="${p.src}" alt="${getLocalized(p.caption)}" draggable="false"><div class="polaroid-caption">${getLocalized(p.caption)}</div>`;
+    slide.addEventListener("click", () => {
+      if (i !== carouselIndex) { carouselIndex = i; updateCarousel(); }
+    });
     trackEl.appendChild(slide);
 
     const dot = document.createElement("div");
@@ -551,11 +603,34 @@ function renderGallery() {
 }
 
 function updateCarousel() {
-  const trackEl = document.getElementById("galleryTrack");
   const total = galleryPhotos.length;
   carouselIndex = ((carouselIndex % total) + total) % total;
-  trackEl.style.transform = `translateX(-${carouselIndex * 100}%)`;
+  const slides = document.querySelectorAll("#galleryTrack .gallery-slide");
+  const isMobile = window.innerWidth < 600;
+
+  slides.forEach((slide, i) => {
+    const off = i - carouselIndex;
+    const abs = Math.abs(off);
+    const baseTilt = off === 0 ? (i % 2 === 0 ? -2 : 2) : 0;
+    const xStep = isMobile ? 52 : 62;
+    slide.style.transform =
+      `translate(-50%, -50%) translateX(${off * xStep}%) translateZ(${-abs * 160}px) ` +
+      `rotateY(${off * -28}deg) rotate(${baseTilt}deg) scale(${1 - abs * 0.12})`;
+    slide.style.zIndex = 20 - abs;
+    slide.style.opacity = abs > 2 ? 0 : 1 - abs * 0.28;
+    slide.style.filter = abs ? `brightness(${1 - abs * 0.18})` : "none";
+    slide.style.pointerEvents = abs > 2 ? "none" : "auto";
+  });
+
   document.querySelectorAll(".carousel-dot").forEach((d, i) => d.classList.toggle("active", i === carouselIndex));
+
+  const captionEl = document.getElementById("galleryCaption");
+  const counterEl = document.getElementById("galleryCounter");
+  if (captionEl) {
+    captionEl.textContent = getLocalized(galleryPhotos[carouselIndex].caption);
+    anime({ targets: captionEl, opacity: [0, 1], translateY: [8, 0], duration: 450, easing: "easeOutQuad" });
+  }
+  if (counterEl) counterEl.textContent = String(carouselIndex + 1).padStart(2, "0") + " / " + String(total).padStart(2, "0");
 }
 
 function initCarouselEvents() {
@@ -579,13 +654,68 @@ function initCarouselEvents() {
     else if (deltaX < -50) { carouselIndex++; updateCarousel(); }
     isDragging = false;
   });
+  window.addEventListener("resize", updateCarousel);
+}
+
+/* -------- OUR SONG: Soundwellen + schwebende Noten -------- */
+function initSongVisuals() {
+  const wave = document.getElementById("songWave");
+  if (wave && !wave.children.length) {
+    for (let i = 0; i < 26; i++) {
+      const bar = document.createElement("i");
+      bar.style.animationDuration = (0.9 + Math.random() * 0.9).toFixed(2) + "s";
+      bar.style.animationDelay = (Math.random() * -1.5).toFixed(2) + "s";
+      wave.appendChild(bar);
+    }
+  }
+  const notes = document.getElementById("songNotes");
+  if (notes && !notes.children.length) {
+    const symbols = ["♪", "♫", "♩", "♬"];
+    for (let i = 0; i < 10; i++) {
+      const n = document.createElement("span");
+      n.className = "song-note";
+      n.textContent = symbols[i % symbols.length];
+      n.style.left = 4 + Math.random() * 92 + "%";
+      n.style.fontSize = 14 + Math.random() * 16 + "px";
+      n.style.animationDuration = 9 + Math.random() * 8 + "s";
+      n.style.animationDelay = Math.random() * -14 + "s";
+      notes.appendChild(n);
+    }
+  }
+}
+
+/* -------- CV: Kapitel faden beim Scrollen editorial ein -------- */
+let cvRevealInitialized = false;
+function initCvReveal() {
+  if (cvRevealInitialized) return;
+  cvRevealInitialized = true;
+  const chapters = document.querySelectorAll(".cv-chapter");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        anime({
+          targets: entry.target,
+          opacity: [0, 1],
+          translateY: [36, 0],
+          duration: 850,
+          easing: "easeOutCubic"
+        });
+        const num = entry.target.querySelector(".cv-chapter-num");
+        if (num) anime({ targets: num, opacity: [0, 1], translateX: [-24, 0], duration: 900, delay: 150, easing: "easeOutCubic" });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  chapters.forEach((ch) => observer.observe(ch));
 }
 
 function renderCV() {
   document.getElementById("cvMeetingDetail").textContent = getLocalized(cvMeetingDetail);
   document.getElementById("cvFirstDateDetail").textContent = getLocalized(cvFirstDateDetail);
   document.getElementById("cvExperience").innerHTML = getLocalized(cvExperience).map((e) => `<li>${e}</li>`).join("");
-  document.getElementById("cvSkills").innerHTML = getLocalized(cvSkills).map((s) => `<span class="skill-tag">${s}</span>`).join("");
+  document.getElementById("cvSkills").innerHTML = getLocalized(cvSkills)
+    .map((s) => `<span class="skill-tag">${s}</span>`)
+    .join('<span class="skill-sep">✦</span>');
   document.getElementById("cvAchievements").innerHTML = getLocalized(cvAchievements).map((a) => `<li>${a}</li>`).join("");
   document.getElementById("loveLetterText").textContent = getLocalized(loveLetterText);
 }
@@ -635,7 +765,7 @@ function spellMessageWithEmojis(message, emojis, stage, delayBeforeStart) {
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext("2d");
-  const fontSize = Math.max(20, Math.min(70, (w / message.length) * 1.5));
+  const fontSize = Math.max(40, Math.min(190, (w / message.length) * 1.35));
   ctx.font = `bold ${fontSize}px Poppins, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -643,7 +773,7 @@ function spellMessageWithEmojis(message, emojis, stage, delayBeforeStart) {
   ctx.fillText(message.toUpperCase(), w / 2, h / 2);
 
   const imageData = ctx.getImageData(0, 0, w, h).data;
-  const gap = 5;
+  const gap = 9;
   const points = [];
   for (let y = 0; y < h; y += gap) {
     for (let x = 0; x < w; x += gap) {
@@ -655,12 +785,12 @@ function spellMessageWithEmojis(message, emojis, stage, delayBeforeStart) {
     const j = Math.floor(Math.random() * (i + 1));
     [points[i], points[j]] = [points[j], points[i]];
   }
-  const chosen = points.slice(0, 260);
+  const chosen = points.slice(0, 300);
 
   setTimeout(() => {
     chosen.forEach((pt, i) => {
       const particle = document.createElement("div");
-      particle.className = "firework-particle";
+      particle.className = "firework-particle small";
       particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       particle.style.left = pt.x + "px";
       particle.style.top = (h + 30) + "px";
@@ -691,6 +821,8 @@ function initMainContent() {
   renderGallery();
   renderCV();
   initHeroCta();
+  initSongVisuals();
+  initCvReveal();
   anime({ targets: ".hero-content", opacity: [0, 1], translateY: [30, 0], duration: 1000, easing: "easeOutExpo" });
 }
 
